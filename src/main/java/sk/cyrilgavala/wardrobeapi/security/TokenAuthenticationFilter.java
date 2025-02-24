@@ -34,7 +34,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
 		try {
 			getJwtFromRequest(request).flatMap(tokenProvider::validateTokenAndGetJws).ifPresent(jws -> {
-				String username = jws.getBody().getSubject();
+				String username = jws.getPayload().getSubject();
 				UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

@@ -8,17 +8,24 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import sk.cyrilgavala.wardrobeapi.model.User;
+import sk.cyrilgavala.wardrobeapi.web.dto.RegisterRequest;
+import sk.cyrilgavala.wardrobeapi.web.dto.UserResponse;
+
 @Configuration
 @EnableWebSecurity
 @EnableJpaRepositories(basePackages = "sk.cyrilgavala.wardrobeapi.repository")
 @EnableTransactionManagement
 @ComponentScan({
-	"sk.cyrilgavala.wardrobeapi.config", "sk.cyrilgavala.wardrobeapi.mapper", "sk.cyrilgavala.wardrobeapi.security", "sk.cyrilgavala.wardrobeapi.service", "sk.cyrilgavala.wardrobeapi.web"
+	"sk.cyrilgavala.wardrobeapi.config", "sk.cyrilgavala.wardrobeapi.security", "sk.cyrilgavala.wardrobeapi.service", "sk.cyrilgavala.wardrobeapi.web"
 })
 public class AppConfiguration {
 
 	@Bean
 	public ModelMapper modelMapper() {
-		return new ModelMapper();
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.createTypeMap(User.class, UserResponse.class);
+		modelMapper.createTypeMap(RegisterRequest.class, User.class).addMappings(mapper -> mapper.skip(User::setId));
+		return modelMapper;
 	}
 }

@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.crypto.SecretKey;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,7 +20,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
@@ -43,14 +44,14 @@ public class TokenProvider {
 
 		byte[] signingKey = jwtSecret.getBytes();
 
-		return Jwts.builder().setHeaderParam("typ", TOKEN_TYPE).signWith(Keys.hmacShaKeyFor(signingKey), SignatureAlgorithm.HS512).setExpiration(Date.from(ZonedDateTime.now().plusMinutes(jwtExpirationMinutes).toInstant())).setIssuedAt(Date.from(ZonedDateTime.now().toInstant())).setId(UUID.randomUUID().toString()).setIssuer(TOKEN_ISSUER).setAudience(TOKEN_AUDIENCE).setSubject(user.getUsername()).claim("roles", roles).claim("email", email).compact();
+		return Jwts.builder().header().type(TOKEN_TYPE).and().signWith(Keys.hmacShaKeyFor(signingKey), Jwts.SIG.HS512).expiration(Date.from(ZonedDateTime.now().plusMinutes(jwtExpirationMinutes).toInstant())).issuedAt(Date.from(ZonedDateTime.now().toInstant())).id(UUID.randomUUID().toString()).audience().add(TOKEN_AUDIENCE).and().issuer(TOKEN_ISSUER).subject(user.getUsername()).claim("roles", roles).claim("email", email).compact();
 	}
 
 	public Optional<Jws<Claims>> validateTokenAndGetJws(String token) {
 		try {
-			byte[] signingKey = jwtSecret.getBytes();
+			SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
 
-			Jws<Claims> jws = Jwts.parserBuilder().setSigningKey(signingKey).build().parseClaimsJws(token);
+			Jws<Claims> jws = Jwts.parser().verifyWith(key).build().parseSignedClaims(token);
 
 			return Optional.of(jws);
 		} catch (ExpiredJwtException exception) {
