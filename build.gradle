@@ -1,36 +1,54 @@
 plugins {
     id 'org.springframework.boot' version '4.0.0'
+    id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
 }
 
 group = 'sk.cyrilgavala'
 version = '0.0.1-SNAPSHOT'
 
+java {
+    sourceCompatibility = '21'
+    targetCompatibility = '21'
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    annotationProcessor 'org.projectlombok:lombok:1.18.34'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:4.0.0'
+    // Annotation Processors
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-    implementation 'org.springframework.boot:spring-boot-starter-web:4.0.0'
-    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb:4.0.0'
-    implementation 'org.springframework.boot:spring-boot-starter-security:4.0.0'
-    implementation 'org.springframework.boot:spring-boot-starter-validation:4.0.0'
+    // Spring Boot Starters
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.15.2'
+    // Jackson
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
 
-    implementation 'org.projectlombok:lombok:1.18.34'
+    // Lombok
+    implementation 'org.projectlombok:lombok'
 
-    implementation 'io.jsonwebtoken:jjwt:0.12.3'
-    implementation 'io.jsonwebtoken:jjwt-root:0.12.5'
+    // JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
 
+    // Mapping
     implementation 'org.modelmapper:modelmapper:3.2.0'
-    implementation 'org.mapstruct:mapstruct:1.6.2'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:4.0.0'
+    // API Documentation
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 test {

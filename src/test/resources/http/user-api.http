@@ -17,7 +17,7 @@ Content-Type: {{contentType}}
 }
 
 > {%
-  client.test("Register successful", function() {
+  client.test("Register successful", function () {
     client.assert(response.status === 201, "Response status is not 201");
     client.assert(response.body.accessToken, "No access token in response");
   });
@@ -39,7 +39,7 @@ Content-Type: {{contentType}}
 }
 
 > {%
-  client.test("Register successful", function() {
+  client.test("Register successful", function () {
     client.assert(response.status === 201, "Response status is not 201");
   });
 %}
@@ -55,7 +55,7 @@ Content-Type: {{contentType}}
 }
 
 > {%
-  client.test("Login successful", function() {
+  client.test("Login successful", function () {
     client.assert(response.status === 200, "Response status is not 200");
     client.assert(response.body.accessToken, "No access token in response");
   });
@@ -73,7 +73,7 @@ Content-Type: {{contentType}}
 }
 
 > {%
-  client.test("Login successful", function() {
+  client.test("Login successful", function () {
     client.assert(response.status === 200, "Response status is not 200");
     client.assert(response.body.accessToken, "No access token in response");
   });
@@ -90,8 +90,9 @@ Content-Type: {{contentType}}
 }
 
 > {%
-  client.test("Login should fail", function() {
-    client.assert(response.status === 401 || response.status === 403, "Expected authentication failure");
+  client.test("Login should fail", function () {
+    client.assert(response.status === 401 || response.status === 403,
+        "Expected authentication failure");
   });
 %}
 
@@ -109,7 +110,7 @@ Content-Type: {{contentType}}
 }
 
 > {%
-  client.test("Registration should fail with duplicate username", function() {
+  client.test("Registration should fail with duplicate username", function () {
     client.assert(response.status === 409, "Expected conflict status");
   });
 %}
@@ -128,7 +129,7 @@ Content-Type: {{contentType}}
 }
 
 > {%
-  client.test("Registration should fail with duplicate email", function() {
+  client.test("Registration should fail with duplicate email", function () {
     client.assert(response.status === 409, "Expected conflict status");
   });
 %}
@@ -143,7 +144,7 @@ Content-Type: {{contentType}}
 }
 
 > {%
-  client.test("Registration should fail with missing fields", function() {
+  client.test("Registration should fail with missing fields", function () {
     client.assert(response.status === 400, "Expected bad request status");
   });
 %}

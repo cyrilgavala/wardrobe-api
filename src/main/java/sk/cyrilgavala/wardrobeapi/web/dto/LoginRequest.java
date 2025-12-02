@@ -8,8 +8,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class LoginRequest {
 
-	@NotBlank
-	private String username;
-	@NotBlank
-	private String password;
+  @NotBlank(message = "Username is required")
+  private String username;
+
+  @NotBlank(message = "Password is required")
+  private String password;
 }

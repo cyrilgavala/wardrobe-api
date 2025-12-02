@@ -5,8 +5,41 @@ spring:
     uri: ${MONGODB_URI:mongodb+srv://database:database@databasecluster.3pach.mongodb.net/mydatabase?retryWrites=true&w=majority}
     database: ${MONGODB_DATABASE:wardrobe-api}
 
+# Actuator configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+  health:
+    mongodb:
+      enabled: false
+
+# OpenAPI/Swagger Documentation
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+
+# Application configuration
 app:
+  cors:
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:3000,http://localhost:4200}
   jwt:
-    secret: ${JWT_SECRET:t2Siymw8JU6P3JpaapwP6YH80UmLm9IM0v6R8p5r+3TD2Tg6zRRoFL4Y9KnpO1q/0kx7OLtx+2ecih6MkXUswA==
+    secret: ${JWT_SECRET:t2Siymw8JU6P3JpaapwP6YH80UmLm9IM0v6R8p5r+3TD2Tg6zRRoFL4Y9KnpO1q/0kx7OLtx+2ecih6MkXUswA==}
     expiration:
-      minutes: 60
+      minutes: ${JWT_EXPIRATION_MINUTES:60}
+
+# Logging configuration
+logging:
+  level:
+    sk.cyrilgavala.wardrobeapi: DEBUG
+    org.springframework.security: INFO
+    org.springframework.web: INFO
+    org.springframework.data.mongodb: DEBUG

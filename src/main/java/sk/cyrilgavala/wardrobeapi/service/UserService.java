@@ -5,7 +5,7 @@ import sk.cyrilgavala.wardrobeapi.web.dto.UserResponse;
 
 public interface UserService {
 
-	UserResponse getByUsername(String username);
+  UserResponse getByUsername(String username);
 
-	void saveUser(RegisterRequest request);
+  void saveUser(RegisterRequest request);
 }
