@@ -1,30 +1,12 @@
 spring:
   application:
     name: WardrobeAPI
-  datasource:
-    url: jdbc:mysql://${DB_ENDPOINT}:3306/${DB_NAME}?useSSL=false&serverTimezone=UTC
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
-    driver-class-name: ${DB_DRIVER}
-    hikari:
-      minimum-idle: 5
-      maximum-pool-size: 10
-      auto-commit: true
-      connection-timeout: 30000
-  jpa:
-    hibernate:
-      ddl-auto: update
-    open-in-view: false
-    properties:
-      hibernate:
-        transaction:
-          coordinator_class: jdbc
-  liquibase:
-    change-log: classpath:/db/changelog/db.changelog-master.xml
-    enabled: true
+  mongodb:
+    uri: ${MONGODB_URI:mongodb+srv://database:database@databasecluster.3pach.mongodb.net/mydatabase?retryWrites=true&w=majority}
+    database: ${MONGODB_DATABASE:wardrobe-api}
 
 app:
   jwt:
-    secret: ${JWT_SECRET}
+    secret: ${JWT_SECRET:t2Siymw8JU6P3JpaapwP6YH80UmLm9IM0v6R8p5r+3TD2Tg6zRRoFL4Y9KnpO1q/0kx7OLtx+2ecih6MkXUswA==
     expiration:
       minutes: 60

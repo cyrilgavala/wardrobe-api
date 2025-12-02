@@ -1,5 +1,6 @@
 package sk.cyrilgavala.wardrobeapi.web.advise;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,7 +15,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.util.WebUtils;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 
 @RestControllerAdvice
@@ -30,8 +30,8 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, null, new HttpHeaders(), HttpStatus.CONFLICT, request);
 	}
 
-	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<Object> handleNotFoundExceptionException(EntityNotFoundException ex, WebRequest request) {
+	@ExceptionHandler(NoSuchElementException.class)
+	public ResponseEntity<Object> handleNotFoundExceptionException(NoSuchElementException ex, WebRequest request) {
 		return handleExceptionInternal(ex, null, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 
