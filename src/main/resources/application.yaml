@@ -2,8 +2,8 @@ spring:
   application:
     name: WardrobeAPI
   mongodb:
-    uri: ${MONGODB_URI:mongodb+srv://database:database@databasecluster.3pach.mongodb.net/mydatabase?retryWrites=true&w=majority}
-    database: ${MONGODB_DATABASE:wardrobe-api}
+    uri: ${MONGODB_URI}
+    database: ${MONGODB_DATABASE}
 
 # Actuator configuration
 management:
@@ -30,11 +30,11 @@ springdoc:
 # Application configuration
 app:
   cors:
-    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:3000,http://localhost:4200}
+    allowed-origins: ${ALLOWED_ORIGINS}
   jwt:
-    secret: ${JWT_SECRET:t2Siymw8JU6P3JpaapwP6YH80UmLm9IM0v6R8p5r+3TD2Tg6zRRoFL4Y9KnpO1q/0kx7OLtx+2ecih6MkXUswA==}
+    secret: ${JWT_SECRET}
     expiration:
-      minutes: ${JWT_EXPIRATION_MINUTES:60}
+      minutes: ${JWT_EXPIRATION_MINUTES}
 
 # Logging configuration
 logging:
