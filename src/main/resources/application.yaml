@@ -42,4 +42,3 @@ logging:
     sk.cyrilgavala.wardrobeapi: DEBUG
     org.springframework.security: INFO
     org.springframework.web: INFO
-    org.springframework.data.mongodb: DEBUG
