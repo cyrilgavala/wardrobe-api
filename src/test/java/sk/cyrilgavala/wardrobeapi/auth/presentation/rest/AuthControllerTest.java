@@ -279,5 +279,192 @@ class AuthControllerTest {
     mockMvc.perform(post("/api/auth/logout"))
         .andExpect(status().isOk());
   }
+
+  // ===== Validation Error Tests =====
+
+  @Test
+  void register_shouldReturnBadRequest_whenUsernameIsBlank() throws Exception {
+    // Given
+    RegisterRequest request = RegisterRequest.builder()
+        .username("") // Invalid: blank username
+        .email("john@example.com")
+        .password("SecurePass123!")
+        .firstName("John")
+        .lastName("Doe")
+        .build();
+
+    // When & Then
+    mockMvc.perform(post("/api/auth/register")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status").value(400))
+        .andExpect(jsonPath("$.error").value("Validation Failed"))
+        .andExpect(jsonPath("$.message").value("Invalid input data"))
+        .andExpect(jsonPath("$.errors").exists());
+  }
+
+  @Test
+  void register_shouldReturnBadRequest_whenEmailIsInvalid() throws Exception {
+    // Given
+    RegisterRequest request = RegisterRequest.builder()
+        .username("johndoe")
+        .email("invalid-email") // Invalid: not a valid email format
+        .password("SecurePass123!")
+        .firstName("John")
+        .lastName("Doe")
+        .build();
+
+    // When & Then
+    mockMvc.perform(post("/api/auth/register")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status").value(400))
+        .andExpect(jsonPath("$.error").value("Validation Failed"))
+        .andExpect(jsonPath("$.errors").exists());
+  }
+
+  @Test
+  void register_shouldReturnBadRequest_whenPasswordIsTooShort() throws Exception {
+    // Given
+    RegisterRequest request = RegisterRequest.builder()
+        .username("johndoe")
+        .email("john@example.com")
+        .password("Short1!") // Invalid: less than 8 characters
+        .firstName("John")
+        .lastName("Doe")
+        .build();
+
+    // When & Then
+    mockMvc.perform(post("/api/auth/register")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status").value(400))
+        .andExpect(jsonPath("$.error").value("Validation Failed"));
+  }
+
+  @Test
+  void register_shouldReturnBadRequest_whenPasswordDoesNotMeetComplexity() throws Exception {
+    // Given
+    RegisterRequest request = RegisterRequest.builder()
+        .username("johndoe")
+        .email("john@example.com")
+        .password("weakpassword") // Invalid: no uppercase, no number
+        .firstName("John")
+        .lastName("Doe")
+        .build();
+
+    // When & Then
+    mockMvc.perform(post("/api/auth/register")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status").value(400))
+        .andExpect(jsonPath("$.error").value("Validation Failed"));
+  }
+
+  @Test
+  void register_shouldReturnBadRequest_whenUsernameIsTooShort() throws Exception {
+    // Given
+    RegisterRequest request = RegisterRequest.builder()
+        .username("ab") // Invalid: less than 3 characters
+        .email("john@example.com")
+        .password("SecurePass123!")
+        .firstName("John")
+        .lastName("Doe")
+        .build();
+
+    // When & Then
+    mockMvc.perform(post("/api/auth/register")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status").value(400))
+        .andExpect(jsonPath("$.error").value("Validation Failed"));
+  }
+
+  @Test
+  void register_shouldReturnBadRequest_withMultipleValidationErrors() throws Exception {
+    // Given
+    RegisterRequest request = RegisterRequest.builder()
+        .username("ab") // Invalid: too short
+        .email("invalid-email") // Invalid: not valid email
+        .password("weak") // Invalid: too short and no complexity
+        .firstName("") // Invalid: blank
+        .lastName("") // Invalid: blank
+        .build();
+
+    // When & Then
+    mockMvc.perform(post("/api/auth/register")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.status").value(400))
+        .andExpect(jsonPath("$.error").value("Validation Failed"))
+        .andExpect(jsonPath("$.errors").isMap());
+  }
+
+  // ===== Generic Exception Tests =====
+
+  @Test
+  void register_shouldReturnInternalServerError_whenUnexpectedErrorOccurs() throws Exception {
+    // Given
+    RegisterRequest request = RegisterRequest.builder()
+        .username("johndoe")
+        .email("john@example.com")
+        .password("SecurePass123!")
+        .firstName("John")
+        .lastName("Doe")
+        .build();
+
+    when(authenticationService.register(any()))
+        .thenThrow(new RuntimeException("Unexpected database error"));
+
+    // When & Then
+    mockMvc.perform(post("/api/auth/register")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isInternalServerError())
+        .andExpect(jsonPath("$.status").value(500))
+        .andExpect(jsonPath("$.error").value("Internal Server Error"))
+        .andExpect(jsonPath("$.message").value("An unexpected error occurred"));
+  }
+
+  @Test
+  void login_shouldReturnInternalServerError_whenUnexpectedErrorOccurs() throws Exception {
+    // Given
+    LoginRequest request = new LoginRequest("johndoe", "SecurePass123!");
+
+    when(authenticationService.login(any()))
+        .thenThrow(new NullPointerException("Null pointer exception"));
+
+    // When & Then
+    mockMvc.perform(post("/api/auth/login")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isInternalServerError())
+        .andExpect(jsonPath("$.status").value(500))
+        .andExpect(jsonPath("$.error").value("Internal Server Error"))
+        .andExpect(jsonPath("$.message").value("An unexpected error occurred"));
+  }
+
+  @Test
+  void refreshToken_shouldReturnInternalServerError_whenUnexpectedErrorOccurs() throws Exception {
+    // Given
+    String refreshToken = "valid-refresh-token";
+
+    when(jwtTokenProvider.isRefreshToken(refreshToken))
+        .thenThrow(new IllegalStateException("Invalid JWT state"));
+
+    // When & Then
+    mockMvc.perform(post("/api/auth/refresh")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"refreshToken\":\"" + refreshToken + "\"}"))
+        .andExpect(status().isInternalServerError())
+        .andExpect(jsonPath("$.status").value(500))
+        .andExpect(jsonPath("$.error").value("Internal Server Error"));
+  }
 }
 

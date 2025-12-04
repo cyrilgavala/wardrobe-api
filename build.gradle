@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '4.0.0'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
+    id 'jacoco'
 }
 
 group = 'sk.cyrilgavala'
@@ -56,6 +57,48 @@ test {
     jvmArgs = [
             '-XX:+EnableDynamicAgentLoading' // Suppress Java 21 dynamic agent loading warning
     ]
+    finalizedBy jacocoTestReport // Generate coverage report after tests run
+}
+
+jacoco {
+    toolVersion = "0.8.12"
+}
+
+jacocoTestReport {
+    dependsOn test // Tests are required to run before generating the report
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    '**/config/**',
+                    '**/WardrobeApiApplication.class',
+                    '**/JwtAuthenticationFilter.class'
+            ])
+        }))
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 95.0
+            }
+        }
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    '**/config/**',
+                    '**/WardrobeApiApplication.class',
+                    '**/JwtAuthenticationFilter.class'
+            ])
+        }))
+    }
 }
 
 tasks.withType(JavaExec) {

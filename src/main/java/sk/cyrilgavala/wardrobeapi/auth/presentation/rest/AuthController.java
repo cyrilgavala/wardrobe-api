@@ -142,7 +142,7 @@ public class AuthController {
     User user = userRepository.findByUsername(username)
         .orElseThrow(() -> {
           log.warn("Token refresh failed: user not found - {}", username);
-          return new UserNotFoundException("User not found");
+          return UserNotFoundException.withUsername(username);
         });
 
     // Generate new tokens
@@ -185,7 +185,7 @@ public class AuthController {
     User user = userRepository.findByUsername(username)
         .orElseThrow(() -> {
           log.warn("Get current user failed: user not found - {}", username);
-          return new UserNotFoundException("User not found");
+          return UserNotFoundException.withUsername(username);
         });
 
     UserResponse response = userMapper.toResponse(user);

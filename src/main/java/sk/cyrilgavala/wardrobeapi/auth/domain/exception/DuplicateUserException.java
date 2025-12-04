@@ -7,10 +7,10 @@ public class DuplicateUserException extends RuntimeException {
   }
 
   public static DuplicateUserException withUsername(String username) {
-    return new DuplicateUserException("User with username '" + username + "' already exists");
+    return new DuplicateUserException("User with username %s already exists".formatted(username));
   }
 
   public static DuplicateUserException withEmail(String email) {
-    return new DuplicateUserException("User with email '" + email + "' already exists");
+    return new DuplicateUserException("User with email %s already exists".formatted(email));
   }
 }

@@ -143,6 +143,174 @@ class JwtTokenProviderTest {
   }
 
   @Test
+  void validateTokenAndGetClaims_shouldReturnEmpty_forMalformedToken() {
+    // Given
+    String malformedToken = "not.a.valid.jwt.structure.at.all";
+
+    // When
+    Optional<Claims> claims = jwtTokenProvider.validateTokenAndGetClaims(malformedToken);
+
+    // Then
+    assertThat(claims).isEmpty();
+  }
+
+  @Test
+  void validateTokenAndGetClaims_shouldReturnEmpty_forNullToken() {
+    // Given
+    String nullToken = null;
+
+    // When
+    Optional<Claims> claims = jwtTokenProvider.validateTokenAndGetClaims(nullToken);
+
+    // Then
+    assertThat(claims).isEmpty();
+  }
+
+  @Test
+  void validateTokenAndGetClaims_shouldReturnEmpty_forEmptyToken() {
+    // Given
+    String emptyToken = "";
+
+    // When
+    Optional<Claims> claims = jwtTokenProvider.validateTokenAndGetClaims(emptyToken);
+
+    // Then
+    assertThat(claims).isEmpty();
+  }
+
+  @Test
+  void validateTokenAndGetClaims_shouldReturnEmpty_forTokenWithInvalidSignature() {
+    // Given
+    String token = jwtTokenProvider.generateAccessToken(testUser);
+    // Tamper with the token by changing the signature (last part)
+    String[] parts = token.split("\\.");
+    String tamperedToken = parts[0] + "." + parts[1] + ".InvalidSignature";
+
+    // When
+    Optional<Claims> claims = jwtTokenProvider.validateTokenAndGetClaims(tamperedToken);
+
+    // Then
+    assertThat(claims).isEmpty();
+  }
+
+  @Test
+  void validateTokenAndGetClaims_shouldReturnEmpty_forExpiredToken() {
+    // Given
+    // Set very short expiration to create an expired token
+    ReflectionTestUtils.setField(jwtTokenProvider, "accessTokenExpirationMinutes", -1L);
+    String expiredToken = jwtTokenProvider.generateAccessToken(testUser);
+    // Restore normal expiration
+    ReflectionTestUtils.setField(jwtTokenProvider, "accessTokenExpirationMinutes", 60L);
+
+    // When
+    Optional<Claims> claims = jwtTokenProvider.validateTokenAndGetClaims(expiredToken);
+
+    // Then
+    assertThat(claims).isEmpty();
+  }
+
+  @Test
+  void validateTokenAndGetClaims_shouldReturnEmpty_forTokenSignedWithDifferentSecret() {
+    // Given
+    // Create a token with a different secret
+    String originalSecret = "test-secret-key-that-is-at-least-64-bytes-long-for-hs512-algorithm-requirements-very-secure";
+    String differentSecret = "different-secret-key-that-is-also-at-least-64-bytes-long-for-hs512-algorithm-test-security";
+
+    ReflectionTestUtils.setField(jwtTokenProvider, "jwtSecret", differentSecret);
+    String tokenWithDifferentSecret = jwtTokenProvider.generateAccessToken(testUser);
+
+    // Restore original secret
+    ReflectionTestUtils.setField(jwtTokenProvider, "jwtSecret", originalSecret);
+
+    // When
+    Optional<Claims> claims = jwtTokenProvider.validateTokenAndGetClaims(tokenWithDifferentSecret);
+
+    // Then
+    assertThat(claims).isEmpty();
+  }
+
+  @Test
+  void validateTokenAndGetClaims_shouldReturnEmpty_forWhitespaceToken() {
+    // Given
+    String whitespaceToken = "   ";
+
+    // When
+    Optional<Claims> claims = jwtTokenProvider.validateTokenAndGetClaims(whitespaceToken);
+
+    // Then
+    assertThat(claims).isEmpty();
+  }
+
+  @Test
+  void validateTokenAndGetClaims_shouldReturnEmpty_forTokenWithOnlyTwoParts() {
+    // Given
+    String incompleteTwoPartToken = "header.payload";
+
+    // When
+    Optional<Claims> claims = jwtTokenProvider.validateTokenAndGetClaims(incompleteTwoPartToken);
+
+    // Then
+    assertThat(claims).isEmpty();
+  }
+
+  @Test
+  void validateTokenAndGetClaims_shouldReturnEmpty_forTokenWithExtraParts() {
+    // Given
+    String tokenWithExtraParts = "header.payload.signature.extra";
+
+    // When
+    Optional<Claims> claims = jwtTokenProvider.validateTokenAndGetClaims(tokenWithExtraParts);
+
+    // Then
+    assertThat(claims).isEmpty();
+  }
+
+  @Test
+  void validateTokenAndGetClaims_shouldReturnClaims_forValidRefreshToken() {
+    // Given
+    String refreshToken = jwtTokenProvider.generateRefreshToken(testUser);
+
+    // When
+    Optional<Claims> claims = jwtTokenProvider.validateTokenAndGetClaims(refreshToken);
+
+    // Then
+    assertThat(claims).isPresent();
+    assertThat(claims.get().getSubject()).isEqualTo("johndoe");
+    assertThat(claims.get().get("tokenType")).isEqualTo("refresh");
+  }
+
+  @Test
+  void validateTokenAndGetClaims_shouldReturnEmpty_forTokenWithTamperedPayload() {
+    // Given
+    String token = jwtTokenProvider.generateAccessToken(testUser);
+    String[] parts = token.split("\\.");
+    // Tamper with the payload (middle part) by replacing with a different base64 string
+    String tamperedToken = parts[0] + ".ZXlKemRXSWlPaUpoWkdGdGRHVnpkQ0o5" + "." + parts[2];
+
+    // When
+    Optional<Claims> claims = jwtTokenProvider.validateTokenAndGetClaims(tamperedToken);
+
+    // Then
+    assertThat(claims).isEmpty();
+  }
+
+  @Test
+  void validateTokenAndGetClaims_shouldReturnEmpty_forTokenWithTamperedHeader() {
+    // Given
+    String token = jwtTokenProvider.generateAccessToken(testUser);
+    String[] parts = token.split("\\.");
+    // Tamper with the header (first part)
+    String tamperedToken =
+        "ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5" + "." + parts[1] + "." + parts[2];
+
+    // When
+    Optional<Claims> claims = jwtTokenProvider.validateTokenAndGetClaims(tamperedToken);
+
+    // Then
+    assertThat(claims).isEmpty();
+  }
+
+  @Test
   void generateAccessToken_shouldIncludeAllUserClaims() {
     // Given
     User adminUser = testUser.promoteToAdmin();
