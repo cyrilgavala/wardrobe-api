@@ -27,4 +27,6 @@ hs_err_pid*
 gradle
 .gradle
 build
+
 .env
+src/main/resources/keystore/*.p12

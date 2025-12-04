@@ -4,6 +4,20 @@ spring:
   mongodb:
     uri: ${MONGODB_URI}
     database: ${MONGODB_DATABASE}
+  web:
+    error:
+      include-message: always
+      include-binding-errors: always
+
+# Server configuration
+server:
+  port: ${SERVER_PORT}
+  ssl:
+    enabled: ${SSL_ENABLED}
+    key-store: ${SSL_KEYSTORE_PATH}
+    key-store-password: ${SSL_KEYSTORE_PASSWORD}
+    key-store-type: ${SSL_KEYSTORE_TYPE}
+    key-alias: wardrobe-api
 
 # Actuator configuration
 management:
@@ -35,6 +49,8 @@ app:
     secret: ${JWT_SECRET}
     expiration:
       minutes: ${JWT_EXPIRATION_MINUTES}
+    refresh-expiration:
+      days: ${JWT_REFRESH_EXPIRATION_DAYS}
 
 # Logging configuration
 logging:
