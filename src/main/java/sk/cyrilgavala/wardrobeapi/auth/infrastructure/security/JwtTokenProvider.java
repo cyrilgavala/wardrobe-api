@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 import javax.crypto.SecretKey;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -29,6 +30,7 @@ public class JwtTokenProvider {
   @Value("${app.jwt.secret}")
   private String jwtSecret;
 
+  @Getter
   @Value("${app.jwt.expiration.minutes:60}")
   private Long accessTokenExpirationMinutes;
 
@@ -105,5 +107,6 @@ public class JwtTokenProvider {
         .map(claims -> "refresh".equals(claims.get("tokenType")))
         .orElse(false);
   }
+
 }
 

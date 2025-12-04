@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -45,9 +44,6 @@ public class AuthController {
   private final UserMapper userMapper;
   private final JwtTokenProvider jwtTokenProvider;
 
-  @Value("${app.jwt.expiration.minutes:60}")
-  private Long accessTokenExpirationMinutes;
-
   @PostMapping("/register")
   @Operation(
       summary = "Register a new user",
@@ -71,7 +67,7 @@ public class AuthController {
     String refreshToken = jwtTokenProvider.generateRefreshToken(user);
 
     // Build response
-    Long expiresIn = accessTokenExpirationMinutes * 60; // Convert to seconds
+    Long expiresIn = jwtTokenProvider.getAccessTokenExpirationMinutes() * 60; // Convert to seconds
     AuthenticationResponse response = AuthenticationResponse.of(
         accessToken,
         refreshToken,
@@ -104,7 +100,7 @@ public class AuthController {
     String refreshToken = jwtTokenProvider.generateRefreshToken(user);
 
     // Build response
-    Long expiresIn = accessTokenExpirationMinutes * 60; // Convert to seconds
+    Long expiresIn = jwtTokenProvider.getAccessTokenExpirationMinutes() * 60; // Convert to seconds
     AuthenticationResponse response = AuthenticationResponse.of(
         accessToken,
         refreshToken,
@@ -154,7 +150,7 @@ public class AuthController {
     String refreshToken = jwtTokenProvider.generateRefreshToken(user);
 
     // Build response
-    Long expiresIn = accessTokenExpirationMinutes * 60;
+    Long expiresIn = jwtTokenProvider.getAccessTokenExpirationMinutes() * 60;
     AuthenticationResponse response = AuthenticationResponse.of(
         accessToken,
         refreshToken,

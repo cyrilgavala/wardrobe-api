@@ -53,4 +53,13 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    jvmArgs = [
+            '-XX:+EnableDynamicAgentLoading' // Suppress Java 21 dynamic agent loading warning
+    ]
+}
+
+tasks.withType(JavaExec) {
+    jvmArgs = [
+            '-XX:+EnableDynamicAgentLoading' // Suppress Java 21 dynamic agent loading warning
+    ]
 }

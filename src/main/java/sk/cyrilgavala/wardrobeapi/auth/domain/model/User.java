@@ -77,5 +77,20 @@ public record User(
         .lastLoginAt(Instant.now())
         .build();
   }
+
+  public User promoteToAdmin() {
+    return User.builder()
+        .id(this.id)
+        .username(this.username)
+        .email(this.email)
+        .password(this.password)
+        .firstName(this.firstName)
+        .lastName(this.lastName)
+        .role(UserRole.ADMIN)
+        .createdAt(this.createdAt)
+        .updatedAt(Instant.now())
+        .lastLoginAt(this.lastLoginAt)
+        .build();
+  }
 }
 
