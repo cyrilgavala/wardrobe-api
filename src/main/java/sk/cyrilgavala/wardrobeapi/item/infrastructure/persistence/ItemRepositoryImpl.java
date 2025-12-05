@@ -32,7 +32,7 @@ public class ItemRepositoryImpl implements ItemRepository {
 
   @Override
   public List<Item> findByUserIdAndCategory(String userId, String category) {
-    return mongoItemRepository.findByUserIdAndCategory(userId, categoryMapper.fromString(category));
+    return mongoItemRepository.findByUserIdAndCategory(userId, categoryMapper.map(category));
   }
 
   @Override

@@ -10,4 +10,8 @@ public class RoomDtoMapper {
     return room != null ? room.name() : null;
   }
 
+  public Room map(String room) {
+    return room != null ? Room.valueOf(room) : null;
+  }
+
 }

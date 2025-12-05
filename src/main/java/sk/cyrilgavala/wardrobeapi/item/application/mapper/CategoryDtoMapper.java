@@ -10,5 +10,9 @@ public class CategoryDtoMapper {
     return category != null ? category.name() : null;
   }
 
+  public Category map(String category) {
+    return category != null ? Category.valueOf(category) : null;
+  }
+
 }
 
