@@ -14,8 +14,8 @@ import sk.cyrilgavala.wardrobeapi.item.domain.model.Item;
 @RequiredArgsConstructor
 public class ItemDtoMapper {
 
-  private final CategoryMapper categoryMapper;
-  private final RoomMapper roomMapper;
+  private final CategoryDtoMapper categoryMapper;
+  private final RoomDtoMapper roomMapper;
 
   public ItemDto toDto(Item item) {
     if (item == null) {
@@ -27,8 +27,8 @@ public class ItemDtoMapper {
         .userId(item.userId())
         .name(item.name())
         .description(item.description())
-        .category(categoryMapper.toString(item.category()))
-        .room(roomMapper.toString(item.room()))
+        .category(categoryMapper.map(item.category()))
+        .room(roomMapper.map(item.room()))
         .color(item.color())
         .brand(item.brand())
         .size(item.size())

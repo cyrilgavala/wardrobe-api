@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import sk.cyrilgavala.wardrobeapi.item.application.mapper.CategoryMapper;
+import sk.cyrilgavala.wardrobeapi.item.application.mapper.CategoryDtoMapper;
 import sk.cyrilgavala.wardrobeapi.item.domain.model.Item;
 import sk.cyrilgavala.wardrobeapi.item.domain.repository.ItemRepository;
 
@@ -13,7 +13,7 @@ import sk.cyrilgavala.wardrobeapi.item.domain.repository.ItemRepository;
 public class ItemRepositoryImpl implements ItemRepository {
 
   private final MongoItemRepository mongoItemRepository;
-  private final CategoryMapper categoryMapper;
+  private final CategoryDtoMapper categoryMapper;
 
   @Override
   public Item save(Item item) {

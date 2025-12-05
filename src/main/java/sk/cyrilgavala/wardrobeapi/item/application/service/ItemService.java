@@ -8,9 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.cyrilgavala.wardrobeapi.item.application.command.CreateItemCommand;
 import sk.cyrilgavala.wardrobeapi.item.application.command.UpdateItemCommand;
 import sk.cyrilgavala.wardrobeapi.item.application.dto.ItemDto;
-import sk.cyrilgavala.wardrobeapi.item.application.mapper.CategoryMapper;
+import sk.cyrilgavala.wardrobeapi.item.application.mapper.CategoryDtoMapper;
 import sk.cyrilgavala.wardrobeapi.item.application.mapper.ItemDtoMapper;
-import sk.cyrilgavala.wardrobeapi.item.application.mapper.RoomMapper;
+import sk.cyrilgavala.wardrobeapi.item.application.mapper.RoomDtoMapper;
 import sk.cyrilgavala.wardrobeapi.item.domain.exception.ItemAccessDeniedException;
 import sk.cyrilgavala.wardrobeapi.item.domain.exception.ItemNotFoundException;
 import sk.cyrilgavala.wardrobeapi.item.domain.model.Item;
@@ -23,8 +23,8 @@ public class ItemService {
 
   private final ItemRepository itemRepository;
   private final ItemDtoMapper itemDtoMapper;
-  private final CategoryMapper categoryMapper;
-  private final RoomMapper roomMapper;
+  private final CategoryDtoMapper categoryMapper;
+  private final RoomDtoMapper roomMapper;
 
   @Transactional
   public ItemDto createItem(CreateItemCommand command) {
