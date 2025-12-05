@@ -2,7 +2,6 @@ package sk.cyrilgavala.wardrobeapi.item.presentation.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.Instant;
-import sk.cyrilgavala.wardrobeapi.item.domain.model.ItemCategory;
 
 @Schema(description = "Response containing wardrobe item details")
 public record ItemResponse(
@@ -18,8 +17,15 @@ public record ItemResponse(
     @Schema(description = "Description of the item", example = "Comfortable slim-fit jeans")
     String description,
 
-    @Schema(description = "Category of the item", example = "BOTTOMS")
-    ItemCategory category,
+    @Schema(description = "Category of the item", example = "BOTTOMS",
+        allowableValues = {"TOPS", "BOTTOMS", "DRESSES", "OUTERWEAR", "SHOES", "ACCESSORIES",
+            "UNDERWEAR", "SPORTSWEAR", "SLEEPWEAR", "FORMAL", "OTHER"})
+    String category,
+
+    @Schema(description = "Room where the item is stored", example = "WARDROBE",
+        allowableValues = {"BEDROOM", "WARDROBE", "CLOSET", "BATHROOM", "LAUNDRY_ROOM", "HALLWAY",
+            "GARAGE", "STORAGE", "OTHER"})
+    String room,
 
     @Schema(description = "Color of the item", example = "Blue")
     String color,
@@ -60,7 +66,8 @@ public record ItemResponse(
       String userId,
       String name,
       String description,
-      ItemCategory category,
+      String category,
+      String room,
       String color,
       String brand,
       String size,
@@ -78,6 +85,7 @@ public record ItemResponse(
         name,
         description,
         category,
+        room,
         color,
         brand,
         size,

@@ -1,6 +1,6 @@
 package sk.cyrilgavala.wardrobeapi.item.domain.model;
 
-public enum ItemCategory {
+public enum Category {
   TOPS,
   BOTTOMS,
   DRESSES,

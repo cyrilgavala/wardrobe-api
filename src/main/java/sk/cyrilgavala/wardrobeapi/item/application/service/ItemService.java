@@ -7,10 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sk.cyrilgavala.wardrobeapi.item.application.command.CreateItemCommand;
 import sk.cyrilgavala.wardrobeapi.item.application.command.UpdateItemCommand;
+import sk.cyrilgavala.wardrobeapi.item.application.dto.ItemDto;
+import sk.cyrilgavala.wardrobeapi.item.application.mapper.CategoryMapper;
+import sk.cyrilgavala.wardrobeapi.item.application.mapper.ItemDtoMapper;
+import sk.cyrilgavala.wardrobeapi.item.application.mapper.RoomMapper;
 import sk.cyrilgavala.wardrobeapi.item.domain.exception.ItemAccessDeniedException;
 import sk.cyrilgavala.wardrobeapi.item.domain.exception.ItemNotFoundException;
 import sk.cyrilgavala.wardrobeapi.item.domain.model.Item;
-import sk.cyrilgavala.wardrobeapi.item.domain.model.ItemCategory;
 import sk.cyrilgavala.wardrobeapi.item.domain.repository.ItemRepository;
 
 @Slf4j
@@ -19,16 +22,20 @@ import sk.cyrilgavala.wardrobeapi.item.domain.repository.ItemRepository;
 public class ItemService {
 
   private final ItemRepository itemRepository;
+  private final ItemDtoMapper itemDtoMapper;
+  private final CategoryMapper categoryMapper;
+  private final RoomMapper roomMapper;
 
   @Transactional
-  public Item createItem(CreateItemCommand command) {
+  public ItemDto createItem(CreateItemCommand command) {
     log.info("Creating new item for user: {}", command.userId());
 
     Item item = Item.create(
         command.userId(),
         command.name(),
         command.description(),
-        command.category(),
+        categoryMapper.fromString(command.category()),
+        roomMapper.fromString(command.room()),
         command.color(),
         command.brand(),
         command.size(),
@@ -43,11 +50,11 @@ public class ItemService {
     Item savedItem = itemRepository.save(item);
     log.info("Item created successfully with id: {}", savedItem.id());
 
-    return savedItem;
+    return itemDtoMapper.toDto(savedItem);
   }
 
   @Transactional
-  public Item updateItem(UpdateItemCommand command) {
+  public ItemDto updateItem(UpdateItemCommand command) {
     log.info("Updating item with id: {}", command.id());
 
     // Find existing item
@@ -68,7 +75,8 @@ public class ItemService {
     Item updatedItem = existingItem.update(
         command.name(),
         command.description(),
-        command.category(),
+        categoryMapper.fromString(command.category()),
+        roomMapper.fromString(command.room()),
         command.color(),
         command.brand(),
         command.size(),
@@ -83,7 +91,7 @@ public class ItemService {
     Item savedItem = itemRepository.save(updatedItem);
     log.info("Item updated successfully: {}", savedItem.id());
 
-    return savedItem;
+    return itemDtoMapper.toDto(savedItem);
   }
 
   @Transactional
@@ -108,7 +116,7 @@ public class ItemService {
   }
 
   @Transactional(readOnly = true)
-  public Item getItem(String id, String userId) {
+  public ItemDto getItem(String id, String userId) {
     log.info("Fetching item with id: {}", id);
 
     Item item = itemRepository.findById(id)
@@ -123,19 +131,21 @@ public class ItemService {
       throw ItemAccessDeniedException.withId(id);
     }
 
-    return item;
+    return itemDtoMapper.toDto(item);
   }
 
   @Transactional(readOnly = true)
-  public List<Item> getAllItemsForUser(String userId) {
+  public List<ItemDto> getAllItemsForUser(String userId) {
     log.info("Fetching all items for user: {}", userId);
-    return itemRepository.findAllByUserId(userId);
+    List<Item> items = itemRepository.findAllByUserId(userId);
+    return itemDtoMapper.toDtoList(items);
   }
 
   @Transactional(readOnly = true)
-  public List<Item> getItemsByCategory(String userId, ItemCategory category) {
+  public List<ItemDto> getItemsByCategory(String userId, String category) {
     log.info("Fetching items for user {} with category: {}", userId, category);
-    return itemRepository.findByUserIdAndCategory(userId, category);
+    List<Item> items = itemRepository.findByUserIdAndCategory(userId, category);
+    return itemDtoMapper.toDtoList(items);
   }
 }
 

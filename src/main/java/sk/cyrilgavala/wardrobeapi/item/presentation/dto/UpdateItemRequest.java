@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import sk.cyrilgavala.wardrobeapi.item.domain.model.ItemCategory;
 
 @Schema(description = "Request to update an existing wardrobe item")
 public record UpdateItemRequest(
@@ -19,9 +18,16 @@ public record UpdateItemRequest(
     @Size(max = 500, message = "Description must not exceed 500 characters")
     String description,
 
-    @Schema(description = "Category of the item", example = "BOTTOMS")
+    @Schema(description = "Category of the item", example = "BOTTOMS",
+        allowableValues = {"TOPS", "BOTTOMS", "DRESSES", "OUTERWEAR", "SHOES", "ACCESSORIES",
+            "UNDERWEAR", "SPORTSWEAR", "SLEEPWEAR", "FORMAL", "OTHER"})
     @NotNull(message = "Category is required")
-    ItemCategory category,
+    String category,
+
+    @Schema(description = "Room where the item is stored", example = "WARDROBE",
+        allowableValues = {"BEDROOM", "WARDROBE", "CLOSET", "BATHROOM", "LAUNDRY_ROOM", "HALLWAY",
+            "GARAGE", "STORAGE", "OTHER"})
+    String room,
 
     @Schema(description = "Color of the item", example = "Blue")
     @Size(max = 50, message = "Color must not exceed 50 characters")

@@ -25,9 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import sk.cyrilgavala.wardrobeapi.item.application.command.CreateItemCommand;
 import sk.cyrilgavala.wardrobeapi.item.application.command.UpdateItemCommand;
+import sk.cyrilgavala.wardrobeapi.item.application.dto.ItemDto;
 import sk.cyrilgavala.wardrobeapi.item.application.service.ItemService;
-import sk.cyrilgavala.wardrobeapi.item.domain.model.Item;
-import sk.cyrilgavala.wardrobeapi.item.domain.model.ItemCategory;
 import sk.cyrilgavala.wardrobeapi.item.presentation.dto.CreateItemRequest;
 import sk.cyrilgavala.wardrobeapi.item.presentation.dto.ItemResponse;
 import sk.cyrilgavala.wardrobeapi.item.presentation.dto.UpdateItemRequest;
@@ -59,10 +58,10 @@ public class ItemController {
     log.info("Received create item request for user: {}", userId);
 
     CreateItemCommand command = itemMapper.toCreateCommand(request, userId);
-    Item item = itemService.createItem(command);
-    ItemResponse response = itemMapper.toResponse(item);
+    ItemDto itemDto = itemService.createItem(command);
+    ItemResponse response = itemMapper.toResponse(itemDto);
 
-    log.info("Item created successfully with id: {}", item.id());
+    log.info("Item created successfully with id: {}", itemDto.id());
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
@@ -86,8 +85,8 @@ public class ItemController {
     log.info("Received update item request for id: {} by user: {}", id, userId);
 
     UpdateItemCommand command = itemMapper.toUpdateCommand(request, id, userId);
-    Item item = itemService.updateItem(command);
-    ItemResponse response = itemMapper.toResponse(item);
+    ItemDto itemDto = itemService.updateItem(command);
+    ItemResponse response = itemMapper.toResponse(itemDto);
 
     log.info("Item updated successfully: {}", id);
     return ResponseEntity.ok(response);
@@ -133,8 +132,8 @@ public class ItemController {
     String userId = getCurrentUserId();
     log.info("Received get item request for id: {} by user: {}", id, userId);
 
-    Item item = itemService.getItem(id, userId);
-    ItemResponse response = itemMapper.toResponse(item);
+    ItemDto itemDto = itemService.getItem(id, userId);
+    ItemResponse response = itemMapper.toResponse(itemDto);
 
     return ResponseEntity.ok(response);
   }
@@ -150,21 +149,19 @@ public class ItemController {
   })
   public ResponseEntity<List<ItemResponse>> getAllItems(
       @Parameter(description = "Filter by category")
-      @RequestParam(required = false) ItemCategory category) {
+      @RequestParam(required = false) String category) {
     String userId = getCurrentUserId();
     log.info("Received get all items request for user: {} with category filter: {}", userId,
         category);
 
-    List<Item> items;
+    List<ItemDto> itemDtos;
     if (category != null) {
-      items = itemService.getItemsByCategory(userId, category);
+      itemDtos = itemService.getItemsByCategory(userId, category);
     } else {
-      items = itemService.getAllItemsForUser(userId);
+      itemDtos = itemService.getAllItemsForUser(userId);
     }
 
-    List<ItemResponse> response = items.stream()
-        .map(itemMapper::toResponse)
-        .toList();
+    List<ItemResponse> response = itemMapper.toResponseList(itemDtos);
 
     log.info("Retrieved {} items for user: {}", response.size(), userId);
     return ResponseEntity.ok(response);

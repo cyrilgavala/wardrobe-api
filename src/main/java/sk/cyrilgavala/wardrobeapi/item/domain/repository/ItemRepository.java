@@ -3,7 +3,6 @@ package sk.cyrilgavala.wardrobeapi.item.domain.repository;
 import java.util.List;
 import java.util.Optional;
 import sk.cyrilgavala.wardrobeapi.item.domain.model.Item;
-import sk.cyrilgavala.wardrobeapi.item.domain.model.ItemCategory;
 
 public interface ItemRepository {
 
@@ -13,7 +12,7 @@ public interface ItemRepository {
 
   List<Item> findAllByUserId(String userId);
 
-  List<Item> findByUserIdAndCategory(String userId, ItemCategory category);
+  List<Item> findByUserIdAndCategory(String userId, String category);
 
   void deleteById(String id);
 

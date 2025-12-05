@@ -1,9 +1,10 @@
 package sk.cyrilgavala.wardrobeapi.item.presentation.mapper;
 
+import java.util.List;
 import org.springframework.stereotype.Component;
 import sk.cyrilgavala.wardrobeapi.item.application.command.CreateItemCommand;
 import sk.cyrilgavala.wardrobeapi.item.application.command.UpdateItemCommand;
-import sk.cyrilgavala.wardrobeapi.item.domain.model.Item;
+import sk.cyrilgavala.wardrobeapi.item.application.dto.ItemDto;
 import sk.cyrilgavala.wardrobeapi.item.presentation.dto.CreateItemRequest;
 import sk.cyrilgavala.wardrobeapi.item.presentation.dto.ItemResponse;
 import sk.cyrilgavala.wardrobeapi.item.presentation.dto.UpdateItemRequest;
@@ -17,6 +18,7 @@ public class ItemMapper {
         request.name(),
         request.description(),
         request.category(),
+        request.room(),
         request.color(),
         request.brand(),
         request.size(),
@@ -36,6 +38,7 @@ public class ItemMapper {
         request.name(),
         request.description(),
         request.category(),
+        request.room(),
         request.color(),
         request.brand(),
         request.size(),
@@ -48,26 +51,39 @@ public class ItemMapper {
     );
   }
 
-  public ItemResponse toResponse(Item item) {
+  public ItemResponse toResponse(ItemDto itemDto) {
+    if (itemDto == null) {
+      return null;
+    }
+
     return ItemResponse.of(
-        item.id(),
-        item.userId(),
-        item.name(),
-        item.description(),
-        item.category(),
-        item.color(),
-        item.brand(),
-        item.size(),
-        item.washingTemperature(),
-        item.canBeIroned(),
-        item.canBeTumbleDried(),
-        item.canBeDryCleaned(),
-        item.canBeBleached(),
-        item.imageUrl(),
-        item.createdAt(),
-        item.updatedAt()
+        itemDto.id(),
+        itemDto.userId(),
+        itemDto.name(),
+        itemDto.description(),
+        itemDto.category(),
+        itemDto.room(),
+        itemDto.color(),
+        itemDto.brand(),
+        itemDto.size(),
+        itemDto.washingTemperature(),
+        itemDto.canBeIroned(),
+        itemDto.canBeTumbleDried(),
+        itemDto.canBeDryCleaned(),
+        itemDto.canBeBleached(),
+        itemDto.imageUrl(),
+        itemDto.createdAt(),
+        itemDto.updatedAt()
     );
   }
+
+  public List<ItemResponse> toResponseList(List<ItemDto> itemDtos) {
+    if (itemDtos == null) {
+      return List.of();
+    }
+
+    return itemDtos.stream()
+        .map(this::toResponse)
+        .toList();
+  }
 }
-
-

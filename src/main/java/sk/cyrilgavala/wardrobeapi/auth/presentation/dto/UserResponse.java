@@ -2,7 +2,6 @@ package sk.cyrilgavala.wardrobeapi.auth.presentation.dto;
 
 import java.time.Instant;
 import lombok.Builder;
-import sk.cyrilgavala.wardrobeapi.auth.domain.model.UserRole;
 
 @Builder
 public record UserResponse(
@@ -11,7 +10,7 @@ public record UserResponse(
     String email,
     String firstName,
     String lastName,
-    UserRole role,
+    String role,
     Instant createdAt,
     Instant lastLoginAt
 ) {

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sk.cyrilgavala.wardrobeapi.auth.application.command.LoginCommand;
 import sk.cyrilgavala.wardrobeapi.auth.application.command.RegisterUserCommand;
+import sk.cyrilgavala.wardrobeapi.auth.application.dto.UserDto;
 import sk.cyrilgavala.wardrobeapi.auth.application.service.AuthenticationService;
 import sk.cyrilgavala.wardrobeapi.auth.domain.exception.InvalidCredentialsException;
 import sk.cyrilgavala.wardrobeapi.auth.domain.exception.UserNotFoundException;
@@ -60,7 +61,11 @@ public class AuthController {
 
     // Register user
     RegisterUserCommand command = userMapper.toCommand(request);
-    User user = authenticationService.register(command);
+    UserDto userDto = authenticationService.register(command);
+
+    // Fetch user entity for JWT generation (infrastructure layer needs it)
+    User user = userRepository.findByUsername(userDto.username())
+        .orElseThrow(() -> UserNotFoundException.withUsername(userDto.username()));
 
     // Generate tokens
     String accessToken = jwtTokenProvider.generateAccessToken(user);
@@ -74,7 +79,7 @@ public class AuthController {
         expiresIn
     );
 
-    log.info("User registered successfully with id: {}, tokens generated", user.id());
+    log.info("User registered successfully with id: {}, tokens generated", userDto.id());
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
@@ -93,7 +98,11 @@ public class AuthController {
 
     // Authenticate user
     LoginCommand command = userMapper.toCommand(request);
-    User user = authenticationService.login(command);
+    UserDto userDto = authenticationService.login(command);
+
+    // Fetch user entity for JWT generation (infrastructure layer needs it)
+    User user = userRepository.findByUsername(userDto.username())
+        .orElseThrow(() -> UserNotFoundException.withUsername(userDto.username()));
 
     // Generate tokens
     String accessToken = jwtTokenProvider.generateAccessToken(user);
@@ -107,7 +116,7 @@ public class AuthController {
         expiresIn
     );
 
-    log.info("User logged in successfully: {}, tokens generated", user.username());
+    log.info("User logged in successfully: {}, tokens generated", userDto.username());
     return ResponseEntity.ok(response);
   }
 
@@ -182,13 +191,9 @@ public class AuthController {
     String username = authentication.getName();
     log.info("Fetching profile for user: {}", username);
 
-    User user = userRepository.findByUsername(username)
-        .orElseThrow(() -> {
-          log.warn("Get current user failed: user not found - {}", username);
-          return UserNotFoundException.withUsername(username);
-        });
+    UserDto userDto = authenticationService.getUserByUsername(username);
+    UserResponse response = userMapper.toResponse(userDto);
 
-    UserResponse response = userMapper.toResponse(user);
     return ResponseEntity.ok(response);
   }
 

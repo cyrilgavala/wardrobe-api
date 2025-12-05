@@ -1,13 +1,12 @@
 package sk.cyrilgavala.wardrobeapi.item.application.command;
 
-import sk.cyrilgavala.wardrobeapi.item.domain.model.ItemCategory;
-
 public record UpdateItemCommand(
     String id,
     String userId,
     String name,
     String description,
-    ItemCategory category,
+    String category,
+    String room,
     String color,
     String brand,
     String size,

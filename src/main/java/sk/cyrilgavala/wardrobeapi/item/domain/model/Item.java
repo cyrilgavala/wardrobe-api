@@ -22,7 +22,10 @@ public record Item(
     String description,
 
     @Field("category")
-    ItemCategory category,
+    Category category,
+
+    @Field("room")
+    Room room,
 
     @Field("color")
     String color,
@@ -62,7 +65,8 @@ public record Item(
       String userId,
       String name,
       String description,
-      ItemCategory category,
+      Category category,
+      Room room,
       String color,
       String brand,
       String size,
@@ -77,6 +81,7 @@ public record Item(
         .name(name)
         .description(description)
         .category(category)
+        .room(room)
         .color(color)
         .brand(brand)
         .size(size)
@@ -94,7 +99,8 @@ public record Item(
   public Item update(
       String name,
       String description,
-      ItemCategory category,
+      Category category,
+      Room room,
       String color,
       String brand,
       String size,
@@ -110,6 +116,7 @@ public record Item(
         .name(name)
         .description(description)
         .category(category)
+        .room(room)
         .color(color)
         .brand(brand)
         .size(size)
