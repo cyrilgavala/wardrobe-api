@@ -1,8 +1,10 @@
 package sk.cyrilgavala.wardrobeapi.item.application.mapper;
 
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 import sk.cyrilgavala.wardrobeapi.item.application.dto.ItemDto;
 import sk.cyrilgavala.wardrobeapi.item.domain.model.Item;
 
@@ -37,7 +39,7 @@ public class ItemDtoMapper {
         .canBeTumbleDried(item.canBeTumbleDried())
         .canBeDryCleaned(item.canBeDryCleaned())
         .canBeBleached(item.canBeBleached())
-        .imageUrl(item.imageUrl())
+        .imageUrl(item.imageUrl()).boxNumber(item.boxNumber())
         .createdAt(item.createdAt())
         .updatedAt(item.updatedAt())
         .build();

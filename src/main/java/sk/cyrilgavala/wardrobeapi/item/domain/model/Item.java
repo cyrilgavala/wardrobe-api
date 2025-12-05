@@ -1,10 +1,12 @@
 package sk.cyrilgavala.wardrobeapi.item.domain.model;
 
 import java.time.Instant;
-import lombok.Builder;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import lombok.Builder;
 
 @Document(collection = "items")
 @Builder
@@ -54,6 +56,8 @@ public record Item(
     @Field("image_url")
     String imageUrl,
 
+	@Field("box_number") Integer boxNumber,
+
     @Field("created_at")
     Instant createdAt,
 
@@ -74,8 +78,8 @@ public record Item(
       Boolean canBeIroned,
       Boolean canBeTumbleDried,
       Boolean canBeDryCleaned,
-      Boolean canBeBleached,
-      String imageUrl) {
+      Boolean canBeBleached, String imageUrl, Integer boxNumber)
+  {
     return Item.builder()
         .userId(userId)
         .name(name)
@@ -90,7 +94,7 @@ public record Item(
         .canBeTumbleDried(canBeTumbleDried)
         .canBeDryCleaned(canBeDryCleaned)
         .canBeBleached(canBeBleached)
-        .imageUrl(imageUrl)
+        .imageUrl(imageUrl).boxNumber(boxNumber)
         .createdAt(Instant.now())
         .updatedAt(Instant.now())
         .build();
@@ -108,8 +112,8 @@ public record Item(
       Boolean canBeIroned,
       Boolean canBeTumbleDried,
       Boolean canBeDryCleaned,
-      Boolean canBeBleached,
-      String imageUrl) {
+      Boolean canBeBleached, String imageUrl, Integer boxNumber)
+  {
     return Item.builder()
         .id(this.id)
         .userId(this.userId)
@@ -125,7 +129,7 @@ public record Item(
         .canBeTumbleDried(canBeTumbleDried)
         .canBeDryCleaned(canBeDryCleaned)
         .canBeBleached(canBeBleached)
-        .imageUrl(imageUrl)
+        .imageUrl(imageUrl).boxNumber(boxNumber)
         .createdAt(this.createdAt)
         .updatedAt(Instant.now())
         .build();

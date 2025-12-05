@@ -17,6 +17,7 @@ Content-Type: {{contentType}}
   "name": "Blue Denim Jeans",
   "description": "Comfortable slim-fit jeans perfect for casual wear",
   "category": "BOTTOMS",
+  "room": "WARDROBE",
   "color": "Blue",
   "brand": "Levi's",
   "size": "32",
@@ -25,7 +26,8 @@ Content-Type: {{contentType}}
   "canBeTumbleDried": false,
   "canBeDryCleaned": false,
   "canBeBleached": false,
-  "imageUrl": "https://example.com/images/blue-jeans.jpg"
+  "imageUrl": "https://example.com/images/blue-jeans.jpg",
+  "boxNumber": 1
 }
 
 > {%
@@ -47,6 +49,7 @@ Content-Type: {{contentType}}
   "name": "White Cotton T-Shirt",
   "description": "Classic white t-shirt, 100% cotton",
   "category": "TOPS",
+  "room": "CLOSET",
   "color": "White",
   "brand": "H&M",
   "size": "M",
@@ -54,7 +57,8 @@ Content-Type: {{contentType}}
   "canBeIroned": true,
   "canBeTumbleDried": true,
   "canBeDryCleaned": false,
-  "canBeBleached": true
+  "canBeBleached": true,
+  "boxNumber": 2
 }
 
 > {%
@@ -76,6 +80,7 @@ Content-Type: {{contentType}}
   "name": "Black Leather Jacket",
   "description": "Genuine leather motorcycle jacket",
   "category": "OUTERWEAR",
+  "room": "HALLWAY",
   "color": "Black",
   "brand": "Zara",
   "size": "L",
@@ -84,7 +89,8 @@ Content-Type: {{contentType}}
   "canBeTumbleDried": false,
   "canBeDryCleaned": true,
   "canBeBleached": false,
-  "imageUrl": "https://example.com/images/leather-jacket.jpg"
+  "imageUrl": "https://example.com/images/leather-jacket.jpg",
+  "boxNumber": 3
 }
 
 > {%
@@ -102,6 +108,7 @@ Content-Type: {{contentType}}
   "name": "Red Summer Dress",
   "description": "Floral print summer dress",
   "category": "DRESSES",
+  "room": "BEDROOM",
   "color": "Red",
   "brand": "Mango",
   "size": "S",
@@ -109,7 +116,8 @@ Content-Type: {{contentType}}
   "canBeIroned": true,
   "canBeTumbleDried": false,
   "canBeDryCleaned": false,
-  "canBeBleached": false
+  "canBeBleached": false,
+  "boxNumber": 1
 }
 
 > {%
@@ -127,6 +135,7 @@ Content-Type: {{contentType}}
   "name": "Nike Running Shoes",
   "description": "Lightweight running shoes with good cushioning",
   "category": "SHOES",
+  "room": "STORAGE",
   "color": "Grey",
   "brand": "Nike",
   "size": "42",
@@ -134,7 +143,8 @@ Content-Type: {{contentType}}
   "canBeIroned": false,
   "canBeTumbleDried": false,
   "canBeDryCleaned": false,
-  "canBeBleached": false
+  "canBeBleached": false,
+  "boxNumber": 4
 }
 
 > {%
@@ -220,6 +230,7 @@ Content-Type: {{contentType}}
   "name": "Blue Denim Jeans - Updated",
   "description": "Comfortable slim-fit jeans - now with updated description",
   "category": "BOTTOMS",
+  "room": "WARDROBE",
   "color": "Dark Blue",
   "brand": "Levi's",
   "size": "32",
@@ -228,7 +239,8 @@ Content-Type: {{contentType}}
   "canBeTumbleDried": false,
   "canBeDryCleaned": false,
   "canBeBleached": false,
-  "imageUrl": "https://example.com/images/blue-jeans-updated.jpg"
+  "imageUrl": "https://example.com/images/blue-jeans-updated.jpg",
+  "boxNumber": 5
 }
 
 > {%
@@ -265,6 +277,7 @@ Content-Type: {{contentType}}
   "name": "Unauthorized Item",
   "description": "This should fail",
   "category": "TOPS",
+  "room": "BEDROOM",
   "color": "Red",
   "brand": "Test",
   "size": "M",
@@ -272,7 +285,8 @@ Content-Type: {{contentType}}
   "canBeIroned": true,
   "canBeTumbleDried": true,
   "canBeDryCleaned": false,
-  "canBeBleached": false
+  "canBeBleached": false,
+  "boxNumber": 1
 }
 
 > {%
@@ -288,7 +302,8 @@ Content-Type: {{contentType}}
 
 {
   "description": "Missing name and category",
-  "color": "Blue"
+  "color": "Blue",
+  "room": "BEDROOM"
 }
 
 > {%
@@ -306,6 +321,7 @@ Content-Type: {{contentType}}
   "name": "Invalid Category Item",
   "description": "This has an invalid category",
   "category": "INVALID_CATEGORY",
+  "room": "BEDROOM",
   "color": "Blue",
   "brand": "Test",
   "size": "M",
@@ -313,7 +329,8 @@ Content-Type: {{contentType}}
   "canBeIroned": true,
   "canBeTumbleDried": true,
   "canBeDryCleaned": false,
-  "canBeBleached": false
+  "canBeBleached": false,
+  "boxNumber": 1
 }
 
 > {%
@@ -331,6 +348,7 @@ Content-Type: {{contentType}}
   "name": "Invalid Temperature Item",
   "description": "Temperature too high",
   "category": "TOPS",
+  "room": "BEDROOM",
   "color": "Blue",
   "brand": "Test",
   "size": "M",
@@ -338,7 +356,8 @@ Content-Type: {{contentType}}
   "canBeIroned": true,
   "canBeTumbleDried": true,
   "canBeDryCleaned": false,
-  "canBeBleached": false
+  "canBeBleached": false,
+  "boxNumber": 1
 }
 
 > {%
@@ -367,6 +386,7 @@ Content-Type: {{contentType}}
   "name": "Updated Name",
   "description": "Updated description",
   "category": "TOPS",
+  "room": "CLOSET",
   "color": "Blue",
   "brand": "Test",
   "size": "M",
@@ -374,7 +394,8 @@ Content-Type: {{contentType}}
   "canBeIroned": true,
   "canBeTumbleDried": true,
   "canBeDryCleaned": false,
-  "canBeBleached": false
+  "canBeBleached": false,
+  "boxNumber": 1
 }
 
 > {%
@@ -413,4 +434,3 @@ Content-Type: {{contentType}}
 # Valid washing temperatures: 0-95°C
 # Set to null if item cannot be washed
 ###
-

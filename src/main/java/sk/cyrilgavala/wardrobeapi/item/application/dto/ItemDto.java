@@ -1,6 +1,7 @@
 package sk.cyrilgavala.wardrobeapi.item.application.dto;
 
 import java.time.Instant;
+
 import lombok.Builder;
 
 /**
@@ -23,7 +24,7 @@ public record ItemDto(
     Boolean canBeTumbleDried,
     Boolean canBeDryCleaned,
     Boolean canBeBleached,
-    String imageUrl,
+    String imageUrl, Integer boxNumber,
     Instant createdAt,
     Instant updatedAt
 ) {

@@ -1,10 +1,12 @@
 package sk.cyrilgavala.wardrobeapi.item.application.service;
 
 import java.util.List;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import sk.cyrilgavala.wardrobeapi.item.application.command.CreateItemCommand;
 import sk.cyrilgavala.wardrobeapi.item.application.command.UpdateItemCommand;
 import sk.cyrilgavala.wardrobeapi.item.application.dto.ItemDto;
@@ -43,8 +45,7 @@ public class ItemService {
         command.canBeIroned(),
         command.canBeTumbleDried(),
         command.canBeDryCleaned(),
-        command.canBeBleached(),
-        command.imageUrl()
+        command.canBeBleached(), command.imageUrl(), command.boxNumber()
     );
 
     Item savedItem = itemRepository.save(item);
@@ -84,8 +85,7 @@ public class ItemService {
         command.canBeIroned(),
         command.canBeTumbleDried(),
         command.canBeDryCleaned(),
-        command.canBeBleached(),
-        command.imageUrl()
+        command.canBeBleached(), command.imageUrl(), command.boxNumber()
     );
 
     Item savedItem = itemRepository.save(updatedItem);

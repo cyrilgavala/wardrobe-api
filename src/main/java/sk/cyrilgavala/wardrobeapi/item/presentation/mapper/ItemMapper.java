@@ -1,7 +1,9 @@
 package sk.cyrilgavala.wardrobeapi.item.presentation.mapper;
 
 import java.util.List;
+
 import org.springframework.stereotype.Component;
+
 import sk.cyrilgavala.wardrobeapi.item.application.command.CreateItemCommand;
 import sk.cyrilgavala.wardrobeapi.item.application.command.UpdateItemCommand;
 import sk.cyrilgavala.wardrobeapi.item.application.dto.ItemDto;
@@ -26,8 +28,7 @@ public class ItemMapper {
         request.canBeIroned(),
         request.canBeTumbleDried(),
         request.canBeDryCleaned(),
-        request.canBeBleached(),
-        request.imageUrl()
+        request.canBeBleached(), request.imageUrl(), request.boxNumber()
     );
   }
 
@@ -46,8 +47,7 @@ public class ItemMapper {
         request.canBeIroned(),
         request.canBeTumbleDried(),
         request.canBeDryCleaned(),
-        request.canBeBleached(),
-        request.imageUrl()
+        request.canBeBleached(), request.imageUrl(), request.boxNumber()
     );
   }
 
@@ -71,7 +71,7 @@ public class ItemMapper {
         itemDto.canBeTumbleDried(),
         itemDto.canBeDryCleaned(),
         itemDto.canBeBleached(),
-        itemDto.imageUrl(),
+        itemDto.imageUrl(), itemDto.boxNumber(),
         itemDto.createdAt(),
         itemDto.updatedAt()
     );

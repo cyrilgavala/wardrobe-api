@@ -13,8 +13,7 @@ public record CreateItemCommand(
     Boolean canBeIroned,
     Boolean canBeTumbleDried,
     Boolean canBeDryCleaned,
-    Boolean canBeBleached,
-    String imageUrl
+    Boolean canBeBleached, String imageUrl, Integer boxNumber
 ) {
 
 }
