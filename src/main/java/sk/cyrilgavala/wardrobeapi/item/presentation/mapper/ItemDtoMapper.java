@@ -1,18 +1,16 @@
 package sk.cyrilgavala.wardrobeapi.item.presentation.mapper;
 
 import java.util.List;
-
 import org.springframework.stereotype.Component;
-
 import sk.cyrilgavala.wardrobeapi.item.application.command.CreateItemCommand;
 import sk.cyrilgavala.wardrobeapi.item.application.command.UpdateItemCommand;
-import sk.cyrilgavala.wardrobeapi.item.application.dto.ItemDto;
+import sk.cyrilgavala.wardrobeapi.item.domain.model.Item;
 import sk.cyrilgavala.wardrobeapi.item.presentation.dto.CreateItemRequest;
 import sk.cyrilgavala.wardrobeapi.item.presentation.dto.ItemResponse;
 import sk.cyrilgavala.wardrobeapi.item.presentation.dto.UpdateItemRequest;
 
 @Component
-public class ItemMapper {
+public class ItemDtoMapper {
 
   public CreateItemCommand toCreateCommand(CreateItemRequest request, String userId) {
     return new CreateItemCommand(
@@ -28,7 +26,8 @@ public class ItemMapper {
         request.canBeIroned(),
         request.canBeTumbleDried(),
         request.canBeDryCleaned(),
-        request.canBeBleached(), request.imageUrl(), request.boxNumber()
+        request.canBeBleached(),
+        request.imageUrl()
     );
   }
 
@@ -47,42 +46,43 @@ public class ItemMapper {
         request.canBeIroned(),
         request.canBeTumbleDried(),
         request.canBeDryCleaned(),
-        request.canBeBleached(), request.imageUrl(), request.boxNumber()
+        request.canBeBleached(),
+        request.imageUrl()
     );
   }
 
-  public ItemResponse toResponse(ItemDto itemDto) {
-    if (itemDto == null) {
+  public ItemResponse toResponse(Item item) {
+    if (item == null) {
       return null;
     }
 
     return ItemResponse.of(
-        itemDto.id(),
-        itemDto.userId(),
-        itemDto.name(),
-        itemDto.description(),
-        itemDto.category(),
-        itemDto.room(),
-        itemDto.color(),
-        itemDto.brand(),
-        itemDto.size(),
-        itemDto.washingTemperature(),
-        itemDto.canBeIroned(),
-        itemDto.canBeTumbleDried(),
-        itemDto.canBeDryCleaned(),
-        itemDto.canBeBleached(),
-        itemDto.imageUrl(), itemDto.boxNumber(),
-        itemDto.createdAt(),
-        itemDto.updatedAt()
+        item.id(),
+        item.userId(),
+        item.name(),
+        item.description(),
+        item.category().name(),
+        item.room().name(),
+        item.color(),
+        item.brand(),
+        item.size(),
+        item.washingTemperature(),
+        item.canBeIroned(),
+        item.canBeTumbleDried(),
+        item.canBeDryCleaned(),
+        item.canBeBleached(),
+        item.imageUrl(),
+        item.createdAt(),
+        item.updatedAt()
     );
   }
 
-  public List<ItemResponse> toResponseList(List<ItemDto> itemDtos) {
-    if (itemDtos == null) {
+  public List<ItemResponse> toResponseList(List<Item> items) {
+    if (items == null) {
       return List.of();
     }
 
-    return itemDtos.stream()
+    return items.stream()
         .map(this::toResponse)
         .toList();
   }

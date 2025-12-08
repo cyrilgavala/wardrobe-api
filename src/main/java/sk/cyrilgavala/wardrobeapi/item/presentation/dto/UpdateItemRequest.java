@@ -27,6 +27,7 @@ public record UpdateItemRequest(
     @Schema(description = "Room where the item is stored", example = "WARDROBE",
         allowableValues = {"BEDROOM", "WARDROBE", "CLOSET", "BATHROOM", "LAUNDRY_ROOM", "HALLWAY",
             "GARAGE", "STORAGE", "OTHER"})
+    @NotNull(message = "Room is required")
     String room,
 
     @Schema(description = "Color of the item", example = "Blue")
