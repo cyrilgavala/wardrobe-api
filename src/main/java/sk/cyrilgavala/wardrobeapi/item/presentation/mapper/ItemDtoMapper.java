@@ -27,7 +27,8 @@ public class ItemDtoMapper {
         request.canBeTumbleDried(),
         request.canBeDryCleaned(),
         request.canBeBleached(),
-        request.imageUrl()
+        request.imageUrl(),
+        request.boxNumber()
     );
   }
 
@@ -47,7 +48,8 @@ public class ItemDtoMapper {
         request.canBeTumbleDried(),
         request.canBeDryCleaned(),
         request.canBeBleached(),
-        request.imageUrl()
+        request.imageUrl(),
+        request.boxNumber()
     );
   }
 
@@ -72,6 +74,7 @@ public class ItemDtoMapper {
         item.canBeDryCleaned(),
         item.canBeBleached(),
         item.imageUrl(),
+        item.boxNumber(),
         item.createdAt(),
         item.updatedAt()
     );

@@ -1,8 +1,7 @@
 package sk.cyrilgavala.wardrobeapi.item.presentation.dto;
 
-import java.time.Instant;
-
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.Instant;
 
 @Schema(description = "Response containing wardrobe item details")
 public record ItemResponse(
@@ -55,7 +54,8 @@ public record ItemResponse(
     @Schema(description = "URL of the item image", example = "https://example.com/image.jpg")
     String imageUrl,
 
-	@Schema(description = "Box number where the item is stored", example = "1") Integer boxNumber,
+    @Schema(description = "Box number where the item is stored", example = "1")
+    Integer boxNumber,
 
     @Schema(description = "Date when the item was created", example = "2023-12-01T10:00:00Z")
     Instant createdAt,
@@ -79,7 +79,8 @@ public record ItemResponse(
       Boolean canBeTumbleDried,
       Boolean canBeDryCleaned,
       Boolean canBeBleached,
-      String imageUrl, Integer boxNumber,
+      String imageUrl,
+      Integer boxNumber,
       Instant createdAt,
       Instant updatedAt) {
     return new ItemResponse(
@@ -97,7 +98,8 @@ public record ItemResponse(
         canBeTumbleDried,
         canBeDryCleaned,
         canBeBleached,
-        imageUrl, boxNumber,
+        imageUrl,
+        boxNumber,
         createdAt,
         updatedAt
     );

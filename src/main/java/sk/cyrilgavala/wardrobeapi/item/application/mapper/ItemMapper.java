@@ -31,7 +31,8 @@ public class ItemMapper {
         command.canBeTumbleDried(),
         command.canBeDryCleaned(),
         command.canBeBleached(),
-        command.imageUrl()
+        command.imageUrl(),
+        command.boxNumber()
     );
   }
 
@@ -49,7 +50,8 @@ public class ItemMapper {
         command.canBeTumbleDried(),
         command.canBeDryCleaned(),
         command.canBeBleached(),
-        command.imageUrl()
+        command.imageUrl(),
+        command.boxNumber()
     );
   }
 }
