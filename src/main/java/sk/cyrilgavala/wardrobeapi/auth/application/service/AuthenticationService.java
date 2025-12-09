@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.cyrilgavala.wardrobeapi.auth.application.command.LoginCommand;
 import sk.cyrilgavala.wardrobeapi.auth.application.command.RegisterUserCommand;
 import sk.cyrilgavala.wardrobeapi.auth.application.dto.UserDto;
-import sk.cyrilgavala.wardrobeapi.auth.application.mapper.UserDtoMapper;
+import sk.cyrilgavala.wardrobeapi.auth.application.mapper.UserMapper;
 import sk.cyrilgavala.wardrobeapi.auth.domain.exception.DuplicateUserException;
 import sk.cyrilgavala.wardrobeapi.auth.domain.exception.InvalidCredentialsException;
 import sk.cyrilgavala.wardrobeapi.auth.domain.exception.UserNotFoundException;
@@ -22,7 +22,7 @@ public class AuthenticationService {
 
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
-  private final UserDtoMapper userDtoMapper;
+  private final UserMapper userDtoMapper;
 
   @Transactional
   public UserDto register(RegisterUserCommand command) {

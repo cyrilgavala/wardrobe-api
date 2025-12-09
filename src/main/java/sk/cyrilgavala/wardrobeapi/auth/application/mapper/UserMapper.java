@@ -9,7 +9,7 @@ import sk.cyrilgavala.wardrobeapi.auth.domain.model.User;
  * application layer to convert domain entities to DTOs.
  */
 @Component
-public class UserDtoMapper {
+public class UserMapper {
 
   public UserDto toDto(User user) {
     if (user == null) {

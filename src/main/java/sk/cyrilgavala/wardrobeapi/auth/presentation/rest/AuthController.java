@@ -31,7 +31,7 @@ import sk.cyrilgavala.wardrobeapi.auth.presentation.dto.LoginRequest;
 import sk.cyrilgavala.wardrobeapi.auth.presentation.dto.RefreshTokenRequest;
 import sk.cyrilgavala.wardrobeapi.auth.presentation.dto.RegisterRequest;
 import sk.cyrilgavala.wardrobeapi.auth.presentation.dto.UserResponse;
-import sk.cyrilgavala.wardrobeapi.auth.presentation.mapper.UserMapper;
+import sk.cyrilgavala.wardrobeapi.auth.presentation.mapper.UserDtoMapper;
 
 @Slf4j
 @RestController
@@ -42,7 +42,7 @@ public class AuthController {
 
   private final AuthenticationService authenticationService;
   private final UserRepository userRepository;
-  private final UserMapper userMapper;
+  private final UserDtoMapper userMapper;
   private final JwtTokenProvider jwtTokenProvider;
 
   @PostMapping("/register")

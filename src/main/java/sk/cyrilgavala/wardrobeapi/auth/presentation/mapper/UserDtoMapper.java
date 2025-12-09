@@ -9,7 +9,7 @@ import sk.cyrilgavala.wardrobeapi.auth.presentation.dto.RegisterRequest;
 import sk.cyrilgavala.wardrobeapi.auth.presentation.dto.UserResponse;
 
 @Component
-public class UserMapper {
+public class UserDtoMapper {
 
   public RegisterUserCommand toCommand(RegisterRequest request) {
     return RegisterUserCommand.builder()
