@@ -17,16 +17,6 @@ public record ItemResponse(
     @Schema(description = "Description of the item", example = "Comfortable slim-fit jeans")
     String description,
 
-    @Schema(description = "Category of the item", example = "BOTTOMS",
-        allowableValues = {"TOPS", "BOTTOMS", "DRESSES", "OUTERWEAR", "SHOES", "ACCESSORIES",
-            "UNDERWEAR", "SPORTSWEAR", "SLEEPWEAR", "FORMAL", "OTHER"})
-    String category,
-
-    @Schema(description = "Room where the item is stored", example = "WARDROBE",
-        allowableValues = {"BEDROOM", "WARDROBE", "CLOSET", "BATHROOM", "LAUNDRY_ROOM", "HALLWAY",
-            "GARAGE", "STORAGE", "OTHER"})
-    String room,
-
     @Schema(description = "Color of the item", example = "Blue")
     String color,
 
@@ -42,11 +32,8 @@ public record ItemResponse(
     @Schema(description = "Whether the item can be ironed", example = "true")
     Boolean canBeIroned,
 
-    @Schema(description = "Whether the item can be tumble dried", example = "false")
-    Boolean canBeTumbleDried,
-
-    @Schema(description = "Whether the item can be dry cleaned", example = "false")
-    Boolean canBeDryCleaned,
+    @Schema(description = "Whether the item can be dried", example = "false")
+    Boolean canBeDried,
 
     @Schema(description = "Whether the item can be bleached", example = "false")
     Boolean canBeBleached,
@@ -69,15 +56,12 @@ public record ItemResponse(
       String userId,
       String name,
       String description,
-      String category,
-      String room,
       String color,
       String brand,
       String size,
       Integer washingTemperature,
       Boolean canBeIroned,
-      Boolean canBeTumbleDried,
-      Boolean canBeDryCleaned,
+      Boolean canBeDried,
       Boolean canBeBleached,
       String imageUrl,
       Integer boxNumber,
@@ -88,15 +72,12 @@ public record ItemResponse(
         userId,
         name,
         description,
-        category,
-        room,
         color,
         brand,
         size,
         washingTemperature,
         canBeIroned,
-        canBeTumbleDried,
-        canBeDryCleaned,
+        canBeDried,
         canBeBleached,
         imageUrl,
         boxNumber,

@@ -5,16 +5,15 @@ public record UpdateItemCommand(
     String userId,
     String name,
     String description,
-    String category,
-    String room,
     String color,
     String brand,
     String size,
     Integer washingTemperature,
     Boolean canBeIroned,
-    Boolean canBeTumbleDried,
-    Boolean canBeDryCleaned,
-    Boolean canBeBleached, String imageUrl, Integer boxNumber
+    Boolean canBeDried,
+    Boolean canBeBleached,
+    String imageUrl,
+    Integer boxNumber
 ) {
 
 }

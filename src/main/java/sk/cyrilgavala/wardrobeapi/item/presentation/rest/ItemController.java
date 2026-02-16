@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import sk.cyrilgavala.wardrobeapi.item.application.command.CreateItemCommand;
 import sk.cyrilgavala.wardrobeapi.item.application.command.DeleteItemCommand;
@@ -31,10 +30,8 @@ import sk.cyrilgavala.wardrobeapi.item.application.command.handler.DeleteItemCom
 import sk.cyrilgavala.wardrobeapi.item.application.command.handler.UpdateItemCommandHandler;
 import sk.cyrilgavala.wardrobeapi.item.application.query.GetAllItemsQuery;
 import sk.cyrilgavala.wardrobeapi.item.application.query.GetItemQuery;
-import sk.cyrilgavala.wardrobeapi.item.application.query.GetItemsByCategoryQuery;
 import sk.cyrilgavala.wardrobeapi.item.application.query.handler.GetAllItemsQueryHandler;
 import sk.cyrilgavala.wardrobeapi.item.application.query.handler.GetItemQueryHandler;
-import sk.cyrilgavala.wardrobeapi.item.application.query.handler.GetItemsByCategoryQueryHandler;
 import sk.cyrilgavala.wardrobeapi.item.domain.model.Item;
 import sk.cyrilgavala.wardrobeapi.item.presentation.dto.CreateItemRequest;
 import sk.cyrilgavala.wardrobeapi.item.presentation.dto.ItemResponse;
@@ -54,7 +51,6 @@ public class ItemController {
   private final DeleteItemCommandHandler deleteItemCommandHandler;
   private final GetItemQueryHandler getItemQueryHandler;
   private final GetAllItemsQueryHandler getAllItemsQueryHandler;
-  private final GetItemsByCategoryQueryHandler getItemsByCategoryQueryHandler;
   private final ItemDtoMapper itemMapper;
 
   @PostMapping
@@ -157,27 +153,18 @@ public class ItemController {
   @GetMapping
   @Operation(
       summary = "Get all wardrobe items",
-      description = "Retrieves all wardrobe items for the authenticated user, optionally filtered by category"
+      description = "Retrieves all wardrobe items for the authenticated user"
   )
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Items retrieved successfully"),
       @ApiResponse(responseCode = "401", description = "Unauthorized")
   })
-  public ResponseEntity<List<ItemResponse>> getAllItems(
-      @Parameter(description = "Filter by category")
-      @RequestParam(required = false) String category) {
+  public ResponseEntity<List<ItemResponse>> getAllItems() {
     String userId = getCurrentUserId();
-    log.info("Received get all items request for user: {} with category filter: {}", userId,
-        category);
+    log.info("Received get all items request for user: {}", userId);
 
-    List<Item> items;
-    if (category != null) {
-      GetItemsByCategoryQuery query = new GetItemsByCategoryQuery(userId, category);
-      items = getItemsByCategoryQueryHandler.handle(query);
-    } else {
-      GetAllItemsQuery query = new GetAllItemsQuery(userId);
-      items = getAllItemsQueryHandler.handle(query);
-    }
+    GetAllItemsQuery query = new GetAllItemsQuery(userId);
+    List<Item> items = getAllItemsQueryHandler.handle(query);
 
     List<ItemResponse> response = itemMapper.toResponseList(items);
 
@@ -187,6 +174,7 @@ public class ItemController {
 
   private String getCurrentUserId() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    assert authentication != null;
     return authentication.getName();
   }
 }

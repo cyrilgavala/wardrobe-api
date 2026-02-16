@@ -13,23 +13,17 @@ import sk.cyrilgavala.wardrobeapi.item.domain.model.Item;
 @AllArgsConstructor
 public class ItemMapper {
 
-  private final CategoryMapper categoryMapper;
-  private final RoomMapper roomMapper;
-
   public Item fromCreateCommand(CreateItemCommand command) {
     return Item.create(
         command.userId(),
         command.name(),
         command.description(),
-        categoryMapper.map(command.category()),
-        roomMapper.map(command.room()),
         command.color(),
         command.brand(),
         command.size(),
         command.washingTemperature(),
         command.canBeIroned(),
-        command.canBeTumbleDried(),
-        command.canBeDryCleaned(),
+        command.canBeDried(),
         command.canBeBleached(),
         command.imageUrl(),
         command.boxNumber()
@@ -40,15 +34,12 @@ public class ItemMapper {
     return existingItem.update(
         command.name(),
         command.description(),
-        categoryMapper.map(command.category()),
-        roomMapper.map(command.room()),
         command.color(),
         command.brand(),
         command.size(),
         command.washingTemperature(),
         command.canBeIroned(),
-        command.canBeTumbleDried(),
-        command.canBeDryCleaned(),
+        command.canBeDried(),
         command.canBeBleached(),
         command.imageUrl(),
         command.boxNumber()

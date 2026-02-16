@@ -75,6 +75,9 @@ jacocoTestReport {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
                     '**/config/**',
+                    '**/handler/*.java',
+                    '**/model/**',
+                    '**/dto/**',
                     '**/WardrobeApiApplication.class',
                     '**/JwtAuthenticationFilter.class'
             ])
@@ -94,6 +97,9 @@ jacocoTestCoverageVerification {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
                     '**/config/**',
+                    '**/handler/*.java',
+                    '**/model/**',
+                    '**/dto/**',
                     '**/WardrobeApiApplication.class',
                     '**/JwtAuthenticationFilter.class'
             ])

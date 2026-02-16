@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Schema(description = "Request to update an existing wardrobe item")
@@ -17,18 +16,6 @@ public record UpdateItemRequest(
     @Schema(description = "Description of the item", example = "Comfortable slim-fit jeans")
     @Size(max = 500, message = "Description must not exceed 500 characters")
     String description,
-
-    @Schema(description = "Category of the item", example = "BOTTOMS",
-        allowableValues = {"TOPS", "BOTTOMS", "DRESSES", "OUTERWEAR", "SHOES", "ACCESSORIES",
-            "UNDERWEAR", "SPORTSWEAR", "SLEEPWEAR", "FORMAL", "OTHER"})
-    @NotNull(message = "Category is required")
-    String category,
-
-    @Schema(description = "Room where the item is stored", example = "WARDROBE",
-        allowableValues = {"BEDROOM", "WARDROBE", "CLOSET", "BATHROOM", "LAUNDRY_ROOM", "HALLWAY",
-            "GARAGE", "STORAGE", "OTHER"})
-    @NotNull(message = "Room is required")
-    String room,
 
     @Schema(description = "Color of the item", example = "Blue")
     @Size(max = 50, message = "Color must not exceed 50 characters")
@@ -50,17 +37,15 @@ public record UpdateItemRequest(
     @Schema(description = "Whether the item can be ironed", example = "true")
     Boolean canBeIroned,
 
-    @Schema(description = "Whether the item can be tumble dried", example = "false")
-    Boolean canBeTumbleDried,
-
-    @Schema(description = "Whether the item can be dry cleaned", example = "false")
-    Boolean canBeDryCleaned,
+    @Schema(description = "Whether the item can be dried", example = "false")
+    Boolean canBeDried,
 
     @Schema(description = "Whether the item can be bleached", example = "false")
     Boolean canBeBleached,
 
     @Schema(description = "URL of the item image", example = "https://example.com/image.jpg")
-    @Size(max = 500, message = "Image URL must not exceed 500 characters") String imageUrl,
+    @Size(max = 500, message = "Image URL must not exceed 500 characters")
+    String imageUrl,
 
     @Schema(description = "Box number where the item is stored", example = "1")
     @Min(value = 1, message = "Box number must be at least 1")
