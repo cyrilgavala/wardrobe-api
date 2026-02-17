@@ -68,13 +68,13 @@ public class AuthenticationService {
     User user = userRepository.findByUsername(command.username())
         .orElseThrow(() -> {
           log.warn("Login failed: user not found - {}", command.username());
-          return new InvalidCredentialsException("Invalid username or password");
+          return new InvalidCredentialsException("Invalid username");
         });
 
     // Verify password
     if (!passwordEncoder.matches(command.password(), user.password())) {
       log.warn("Login failed: invalid password - {}", command.username());
-      throw new InvalidCredentialsException("Invalid username or password");
+      throw new InvalidCredentialsException("Invalid password");
     }
 
     // Record login timestamp

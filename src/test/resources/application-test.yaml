@@ -2,8 +2,8 @@ spring:
   application:
     name: WardrobeAPI
   mongodb:
-    uri: ${MONGODB_URI}
-    database: ${MONGODB_DATABASE}
+    uri: mongodb://localhost:27017/test
+    database: wardrobe-api-test
   web:
     error:
       include-message: always
@@ -11,9 +11,9 @@ spring:
 
 # Server configuration
 server:
-  port: 8443
+  port: 8080
   ssl:
-    enabled: true
+    enabled: false
     key-store: classpath:keystore/wardrobe-api-keystore.p12
     key-store-password: changeit
     key-store-type: PKCS12
@@ -39,7 +39,7 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
-    enabled: true
+    enabled: false
 
 # Application configuration
 app:

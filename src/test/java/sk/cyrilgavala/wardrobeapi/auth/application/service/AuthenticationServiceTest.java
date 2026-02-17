@@ -214,7 +214,7 @@ class AuthenticationServiceTest {
 
     assertThatThrownBy(() -> service.login(command))
         .isInstanceOf(InvalidCredentialsException.class)
-        .hasMessageContaining("Invalid username or password");
+        .hasMessageContaining("Invalid username");
   }
 
   @Test
@@ -236,7 +236,7 @@ class AuthenticationServiceTest {
 
     assertThatThrownBy(() -> service.login(command))
         .isInstanceOf(InvalidCredentialsException.class)
-        .hasMessageContaining("Invalid username or password");
+        .hasMessageContaining("Invalid password");
   }
 
   @Test
