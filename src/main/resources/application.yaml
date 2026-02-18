@@ -61,6 +61,6 @@ app:
 # Logging configuration
 logging:
   level:
-    sk.cyrilgavala.wardrobeapi: DEBUG
+    sk.cyrilgavala.wardrobeapi: INFO
     org.springframework.security: INFO
     org.springframework.web: INFO

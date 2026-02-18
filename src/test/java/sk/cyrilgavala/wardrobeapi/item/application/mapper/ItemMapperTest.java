@@ -260,5 +260,51 @@ class ItemMapperTest {
             .brand(null)
             .build());
   }
+
+  @Test
+  void preservesZeroWashingTemperature() {
+    CreateItemCommand command = new CreateItemCommand(
+        "user123",
+        "Delicate Item",
+        "Hand wash only",
+        "White",
+        "Designer",
+        "S",
+        0,
+        false,
+        false,
+        false,
+        null,
+        null
+    );
+
+    Item result = mapper.fromCreateCommand(command);
+
+    assertThat(result.washingTemperature()).isNotNull();
+    assertThat(result.washingTemperature()).isEqualTo(0);
+  }
+
+  @Test
+  void preservesZeroBoxNumber() {
+    CreateItemCommand command = new CreateItemCommand(
+        "user123",
+        "Unboxed Item",
+        "Not in a box",
+        "Blue",
+        "Brand",
+        "M",
+        30,
+        true,
+        false,
+        false,
+        null,
+        0
+    );
+
+    Item result = mapper.fromCreateCommand(command);
+
+    assertThat(result.boxNumber()).isNotNull();
+    assertThat(result.boxNumber()).isEqualTo(0);
+  }
 }
 

@@ -74,7 +74,7 @@ public class ItemController {
       @Valid @ModelAttribute CreateItemRequest request,
       @RequestPart(value = "image", required = false) MultipartFile image) {
     String userId = getCurrentUserId();
-    log.info("Received create item request for user: {}", userId);
+    log.debug("Received create item request for user: {}", userId);
 
     // Store image if provided
     String imageId = null;
@@ -86,7 +86,7 @@ public class ItemController {
     Item item = createItemCommandHandler.handle(command);
     ItemResponse response = itemMapper.toResponse(item);
 
-    log.info("Item created successfully with id: {}", item.id());
+    log.debug("Item created successfully with id: {}", item.id());
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
@@ -110,7 +110,7 @@ public class ItemController {
       @Valid @ModelAttribute UpdateItemRequest request,
       @RequestPart(value = "image", required = false) MultipartFile image) {
     String userId = getCurrentUserId();
-    log.info("Received update item request for id: {} by user: {}", id, userId);
+    log.debug("Received update item request for id: {} by user: {}", id, userId);
 
     // Get existing item to retrieve current imageId
     GetItemQuery getQuery = new GetItemQuery(id, userId);
@@ -130,7 +130,7 @@ public class ItemController {
     Item item = updateItemCommandHandler.handle(command);
     ItemResponse response = itemMapper.toResponse(item);
 
-    log.info("Item updated successfully: {}", id);
+    log.debug("Item updated successfully: {}", id);
     return ResponseEntity.ok(response);
   }
 
@@ -149,12 +149,12 @@ public class ItemController {
       @Parameter(description = "Item ID", required = true)
       @PathVariable String id) {
     String userId = getCurrentUserId();
-    log.info("Received delete item request for id: {} by user: {}", id, userId);
+    log.debug("Received delete item request for id: {} by user: {}", id, userId);
 
     DeleteItemCommand command = new DeleteItemCommand(id, userId);
     deleteItemCommandHandler.handle(command);
 
-    log.info("Item deleted successfully: {}", id);
+    log.debug("Item deleted successfully: {}", id);
     return ResponseEntity.noContent().build();
   }
 
@@ -173,7 +173,7 @@ public class ItemController {
       @Parameter(description = "Item ID", required = true)
       @PathVariable String id) {
     String userId = getCurrentUserId();
-    log.info("Received get item request for id: {} by user: {}", id, userId);
+    log.debug("Received get item request for id: {} by user: {}", id, userId);
 
     GetItemQuery query = new GetItemQuery(id, userId);
     Item item = getItemQueryHandler.handle(query);
@@ -198,7 +198,7 @@ public class ItemController {
       @Parameter(description = "Item ID", required = true)
       @PathVariable String id) {
     String userId = getCurrentUserId();
-    log.info("Received get image request for item id: {} by user: {}", id, userId);
+    log.debug("Received get image request for item id: {} by user: {}", id, userId);
 
     // Verify item ownership
     GetItemQuery query = new GetItemQuery(id, userId);
@@ -227,14 +227,14 @@ public class ItemController {
   })
   public ResponseEntity<List<ItemResponse>> getAllItems() {
     String userId = getCurrentUserId();
-    log.info("Received get all items request for user: {}", userId);
+    log.debug("Received get all items request for user: {}", userId);
 
     GetAllItemsQuery query = new GetAllItemsQuery(userId);
     List<Item> items = getAllItemsQueryHandler.handle(query);
 
     List<ItemResponse> response = itemMapper.toResponseList(items);
 
-    log.info("Retrieved {} items for user: {}", response.size(), userId);
+    log.debug("Retrieved {} items for user: {}", response.size(), userId);
     return ResponseEntity.ok(response);
   }
 

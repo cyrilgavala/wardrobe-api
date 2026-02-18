@@ -2,7 +2,7 @@ package sk.cyrilgavala.wardrobeapi.auth.presentation.mapper;
 
 import org.springframework.stereotype.Component;
 import sk.cyrilgavala.wardrobeapi.auth.application.command.LoginCommand;
-import sk.cyrilgavala.wardrobeapi.auth.application.command.RegisterUserCommand;
+import sk.cyrilgavala.wardrobeapi.auth.application.command.RegisterCommand;
 import sk.cyrilgavala.wardrobeapi.auth.application.dto.UserDto;
 import sk.cyrilgavala.wardrobeapi.auth.presentation.dto.LoginRequest;
 import sk.cyrilgavala.wardrobeapi.auth.presentation.dto.RegisterRequest;
@@ -11,8 +11,8 @@ import sk.cyrilgavala.wardrobeapi.auth.presentation.dto.UserResponse;
 @Component
 public class UserDtoMapper {
 
-  public RegisterUserCommand toCommand(RegisterRequest request) {
-    return RegisterUserCommand.builder()
+  public RegisterCommand toCommand(RegisterRequest request) {
+    return RegisterCommand.builder()
         .username(request.username())
         .email(request.email())
         .password(request.password())

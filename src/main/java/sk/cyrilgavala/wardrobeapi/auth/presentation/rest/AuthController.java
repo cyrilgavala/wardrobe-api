@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sk.cyrilgavala.wardrobeapi.auth.application.command.LoginCommand;
-import sk.cyrilgavala.wardrobeapi.auth.application.command.RegisterUserCommand;
+import sk.cyrilgavala.wardrobeapi.auth.application.command.RegisterCommand;
 import sk.cyrilgavala.wardrobeapi.auth.application.dto.UserDto;
 import sk.cyrilgavala.wardrobeapi.auth.application.service.AuthenticationService;
 import sk.cyrilgavala.wardrobeapi.auth.domain.exception.InvalidCredentialsException;
@@ -57,10 +57,10 @@ public class AuthController {
   })
   public ResponseEntity<AuthenticationResponse> register(
       @Valid @RequestBody RegisterRequest request) {
-    log.info("Received registration request for username: {}", request.username());
+    log.debug("Received registration request for username: {}", request.username());
 
     // Register user
-    RegisterUserCommand command = userMapper.toCommand(request);
+    RegisterCommand command = userMapper.toCommand(request);
     UserDto userDto = authenticationService.register(command);
 
     // Fetch user entity for JWT generation (infrastructure layer needs it)
@@ -79,7 +79,7 @@ public class AuthController {
         expiresIn
     );
 
-    log.info("User registered successfully with id: {}, tokens generated", userDto.id());
+    log.debug("User registered successfully with id: {}, tokens generated", userDto.id());
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
@@ -94,7 +94,7 @@ public class AuthController {
       @ApiResponse(responseCode = "401", description = "Invalid credentials or account locked/disabled")
   })
   public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody LoginRequest request) {
-    log.info("Received login request for username: {}", request.username());
+    log.debug("Received login request for username: {}", request.username());
 
     // Authenticate user
     LoginCommand command = userMapper.toCommand(request);
@@ -116,7 +116,7 @@ public class AuthController {
         expiresIn
     );
 
-    log.info("User logged in successfully: {}, tokens generated", userDto.username());
+    log.debug("User logged in successfully: {}, tokens generated", userDto.username());
     return ResponseEntity.ok(response);
   }
 
@@ -132,7 +132,7 @@ public class AuthController {
   })
   public ResponseEntity<AuthenticationResponse> refreshToken(
       @Valid @RequestBody RefreshTokenRequest request) {
-    log.info("Received token refresh request");
+    log.debug("Received token refresh request");
 
     // Validate refresh token
     if (!jwtTokenProvider.isRefreshToken(request.refreshToken())) {
@@ -166,7 +166,7 @@ public class AuthController {
         expiresIn
     );
 
-    log.info("Token refreshed successfully for user: {}", username);
+    log.debug("Token refreshed successfully for user: {}", username);
     return ResponseEntity.ok(response);
   }
 
@@ -189,7 +189,7 @@ public class AuthController {
     }
 
     String username = authentication.getName();
-    log.info("Fetching profile for user: {}", username);
+    log.debug("Fetching profile for user: {}", username);
 
     UserDto userDto = authenticationService.getUserByUsername(username);
     UserResponse response = userMapper.toResponse(userDto);
@@ -212,7 +212,7 @@ public class AuthController {
 
     if (authentication != null && authentication.isAuthenticated()) {
       String username = authentication.getName();
-      log.info("User logged out: {}", username);
+      log.debug("User logged out: {}", username);
     }
 
     // In a stateless JWT setup, logout is handled client-side by discarding the token

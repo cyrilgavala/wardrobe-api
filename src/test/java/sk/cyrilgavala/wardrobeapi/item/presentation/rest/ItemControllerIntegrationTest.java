@@ -544,4 +544,27 @@ class ItemControllerIntegrationTest {
         .andExpect(jsonPath("$.message").value(
             org.hamcrest.Matchers.containsString("Invalid image type")));
   }
+
+  @Test
+  @WithMockUser(username = "testuser", authorities = {"USER"})
+  void persistsZeroWashingTemperatureToDatabase() throws Exception {
+    mockMvc.perform(multipart("/api/items")
+            .param("name", "Delicate Silk")
+            .param("description", "Hand wash only")
+            .param("color", "White")
+            .param("brand", "Luxury")
+            .param("size", "S")
+            .param("washingTemperature", "0")
+            .param("canBeIroned", "false")
+            .param("canBeDried", "false")
+            .param("canBeBleached", "false"))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.name").value("Delicate Silk"))
+        .andExpect(jsonPath("$.washingTemperature").value(0));
+
+    assertThat(itemRepository.count()).isEqualTo(1);
+    Item savedItem = itemRepository.findAll().getFirst();
+    assertThat(savedItem.washingTemperature()).isNotNull();
+    assertThat(savedItem.washingTemperature()).isEqualTo(0);
+  }
 }

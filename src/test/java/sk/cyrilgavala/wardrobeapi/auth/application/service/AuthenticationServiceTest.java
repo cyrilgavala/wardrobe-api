@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import sk.cyrilgavala.wardrobeapi.auth.application.command.LoginCommand;
-import sk.cyrilgavala.wardrobeapi.auth.application.command.RegisterUserCommand;
+import sk.cyrilgavala.wardrobeapi.auth.application.command.RegisterCommand;
 import sk.cyrilgavala.wardrobeapi.auth.application.dto.UserDto;
 import sk.cyrilgavala.wardrobeapi.auth.application.mapper.UserMapper;
 import sk.cyrilgavala.wardrobeapi.auth.domain.exception.DuplicateUserException;
@@ -42,7 +42,7 @@ class AuthenticationServiceTest {
 
   @Test
   void registersNewUserSuccessfully() {
-    RegisterUserCommand command = RegisterUserCommand.builder()
+    RegisterCommand command = RegisterCommand.builder()
         .username("johndoe")
         .email("john@example.com")
         .password("password123")
@@ -87,7 +87,7 @@ class AuthenticationServiceTest {
 
   @Test
   void throwsExceptionWhenUsernameAlreadyExists() {
-    RegisterUserCommand command = RegisterUserCommand.builder()
+    RegisterCommand command = RegisterCommand.builder()
         .username("existinguser")
         .email("new@example.com")
         .password("password123")
@@ -104,7 +104,7 @@ class AuthenticationServiceTest {
 
   @Test
   void throwsExceptionWhenEmailAlreadyExists() {
-    RegisterUserCommand command = RegisterUserCommand.builder()
+    RegisterCommand command = RegisterCommand.builder()
         .username("newuser")
         .email("existing@example.com")
         .password("password123")
@@ -122,7 +122,7 @@ class AuthenticationServiceTest {
 
   @Test
   void encodesPasswordDuringRegistration() {
-    RegisterUserCommand command = RegisterUserCommand.builder()
+    RegisterCommand command = RegisterCommand.builder()
         .username("johndoe")
         .email("john@example.com")
         .password("plain_password")

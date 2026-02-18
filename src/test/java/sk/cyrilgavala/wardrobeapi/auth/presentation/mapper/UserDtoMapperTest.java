@@ -6,7 +6,7 @@ import java.time.Instant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import sk.cyrilgavala.wardrobeapi.auth.application.command.LoginCommand;
-import sk.cyrilgavala.wardrobeapi.auth.application.command.RegisterUserCommand;
+import sk.cyrilgavala.wardrobeapi.auth.application.command.RegisterCommand;
 import sk.cyrilgavala.wardrobeapi.auth.application.dto.UserDto;
 import sk.cyrilgavala.wardrobeapi.auth.domain.model.UserRole;
 import sk.cyrilgavala.wardrobeapi.auth.presentation.dto.LoginRequest;
@@ -32,7 +32,7 @@ class UserDtoMapperTest {
         "johndoe"
     );
 
-    RegisterUserCommand result = mapper.toCommand(request);
+    RegisterCommand result = mapper.toCommand(request);
 
     assertThat(result).isNotNull();
     assertThat(result.username()).isEqualTo("johndoe");
@@ -52,7 +52,7 @@ class UserDtoMapperTest {
         "user.name-123"
     );
 
-    RegisterUserCommand result = mapper.toCommand(request);
+    RegisterCommand result = mapper.toCommand(request);
 
     assertThat(result.username()).isEqualTo("user.name-123");
     assertThat(result.email()).isEqualTo("user+tag@example.co.uk");

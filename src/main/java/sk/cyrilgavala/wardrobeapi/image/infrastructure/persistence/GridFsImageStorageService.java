@@ -42,7 +42,7 @@ public class GridFsImageStorageService implements ImageStorageService {
           file.getContentType()
       );
 
-      log.info("Stored image with ID: {}", fileId);
+      log.debug("Stored image with ID: {}", fileId);
       return fileId.toString();
     } catch (IOException e) {
       log.error("Failed to store image: {}", e.getMessage(), e);
@@ -78,7 +78,7 @@ public class GridFsImageStorageService implements ImageStorageService {
 
     try {
       gridFsTemplate.delete(Query.query(Criteria.where("_id").is(new ObjectId(imageId))));
-      log.info("Deleted image with ID: {}", imageId);
+      log.debug("Deleted image with ID: {}", imageId);
     } catch (IllegalArgumentException e) {
       log.warn("Invalid image ID format: {}", imageId);
     }

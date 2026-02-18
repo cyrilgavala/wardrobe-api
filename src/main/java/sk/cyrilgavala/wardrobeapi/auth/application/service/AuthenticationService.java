@@ -6,7 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sk.cyrilgavala.wardrobeapi.auth.application.command.LoginCommand;
-import sk.cyrilgavala.wardrobeapi.auth.application.command.RegisterUserCommand;
+import sk.cyrilgavala.wardrobeapi.auth.application.command.RegisterCommand;
 import sk.cyrilgavala.wardrobeapi.auth.application.dto.UserDto;
 import sk.cyrilgavala.wardrobeapi.auth.application.mapper.UserMapper;
 import sk.cyrilgavala.wardrobeapi.auth.domain.exception.DuplicateUserException;
@@ -25,8 +25,8 @@ public class AuthenticationService {
   private final UserMapper userDtoMapper;
 
   @Transactional
-  public UserDto register(RegisterUserCommand command) {
-    log.info("Registering new user with username: {}", command.username());
+  public UserDto register(RegisterCommand command) {
+    log.debug("Registering new user with username: {}", command.username());
 
     // Validate username uniqueness
     if (userRepository.existsByUsername(command.username())) {
@@ -62,7 +62,7 @@ public class AuthenticationService {
 
   @Transactional
   public UserDto login(LoginCommand command) {
-    log.info("Login attempt for username: {}", command.username());
+    log.debug("Login attempt for username: {}", command.username());
 
     // Find user by username
     User user = userRepository.findByUsername(command.username())
@@ -88,7 +88,7 @@ public class AuthenticationService {
 
   @Transactional(readOnly = true)
   public UserDto getUserByUsername(String username) {
-    log.info("Fetching user by username: {}", username);
+    log.debug("Fetching user by username: {}", username);
 
     User user = userRepository.findByUsername(username)
         .orElseThrow(() -> {
