@@ -133,7 +133,7 @@ class GridFsImageStorageServiceTest {
 
   @Test
   void throwsInvalidImageExceptionWhenFileSizeExceedsLimit() {
-    byte[] largeContent = new byte[11 * 1024 * 1024];
+    byte[] largeContent = new byte[21 * 1024 * 1024];
     MockMultipartFile largeFile = new MockMultipartFile(
         "image",
         "large.jpg",
@@ -190,7 +190,7 @@ class GridFsImageStorageServiceTest {
 
   @Test
   void acceptsFileSizeAtExactLimit() {
-    byte[] maxContent = new byte[10 * 1024 * 1024];
+    byte[] maxContent = new byte[20 * 1024 * 1024];
     MockMultipartFile maxFile = new MockMultipartFile(
         "image",
         "max.jpg",

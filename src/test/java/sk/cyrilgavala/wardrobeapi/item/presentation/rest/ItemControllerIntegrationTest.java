@@ -374,7 +374,7 @@ class ItemControllerIntegrationTest {
   @Test
   @WithMockUser(username = "testuser", authorities = {"USER"})
   void returnsBadRequestWhenUploadingImageThatIsTooLarge() throws Exception {
-    byte[] largeContent = new byte[11 * 1024 * 1024];
+    byte[] largeContent = new byte[21 * 1024 * 1024];
     MockMultipartFile largeImage = new MockMultipartFile(
         "image",
         "large.jpg",

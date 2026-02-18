@@ -58,7 +58,7 @@ public class ImageExceptionHandler {
         .timestamp(Instant.now())
         .status(HttpStatus.BAD_REQUEST.value())
         .error("Bad Request")
-        .message("File size exceeds maximum allowed size of 10MB")
+        .message("File size exceeds maximum allowed size of 20MB")
         .build();
 
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);

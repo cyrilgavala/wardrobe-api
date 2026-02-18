@@ -175,7 +175,7 @@ public class AuthController {
       summary = "Get current user",
       description = "Returns the profile of the currently authenticated user"
   )
-  @SecurityRequirement(name = "Bearer Authentication")
+  @SecurityRequirement(name = "bearerAuth")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "User profile retrieved successfully"),
       @ApiResponse(responseCode = "401", description = "Not authenticated")
@@ -202,7 +202,7 @@ public class AuthController {
       summary = "Logout user",
       description = "Logs out the current user (client should discard tokens)"
   )
-  @SecurityRequirement(name = "Bearer Authentication")
+  @SecurityRequirement(name = "bearerAuth")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Logged out successfully"),
       @ApiResponse(responseCode = "401", description = "Not authenticated")

@@ -46,7 +46,7 @@ import sk.cyrilgavala.wardrobeapi.item.presentation.mapper.ItemDtoMapper;
 @RequestMapping("/api/items")
 @RequiredArgsConstructor
 @Tag(name = "Items", description = "Wardrobe item management endpoints")
-@SecurityRequirement(name = "Bearer Authentication")
+@SecurityRequirement(name = "bearerAuth")
 public class ItemController {
 
   private final CreateItemCommandHandler createItemCommandHandler;
@@ -60,12 +60,15 @@ public class ItemController {
   @PostMapping(consumes = "multipart/form-data")
   @Operation(
       summary = "Create a new wardrobe item",
-      description = "Creates a new wardrobe item for the authenticated user with an image"
+      description =
+          "Creates a new wardrobe item for the authenticated user. Supports optional image upload. "
+              +
+              "Maximum image size: 20MB. Supported formats: JPEG, PNG, WebP."
   )
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Item created successfully"),
-      @ApiResponse(responseCode = "400", description = "Invalid request data"),
-      @ApiResponse(responseCode = "401", description = "Unauthorized")
+      @ApiResponse(responseCode = "400", description = "Invalid request data or image validation failed"),
+      @ApiResponse(responseCode = "401", description = "Unauthorized - valid JWT token required")
   })
   public ResponseEntity<ItemResponse> createItem(
       @Valid @ModelAttribute CreateItemRequest request,
@@ -90,13 +93,15 @@ public class ItemController {
   @PutMapping(value = "/{id}", consumes = "multipart/form-data")
   @Operation(
       summary = "Update an existing wardrobe item",
-      description = "Updates an existing wardrobe item owned by the authenticated user"
+      description = "Updates an existing wardrobe item owned by the authenticated user. " +
+          "If a new image is provided, the old image will be automatically deleted and replaced. " +
+          "Maximum image size: 20MB. Supported formats: JPEG, PNG, WebP."
   )
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Item updated successfully"),
-      @ApiResponse(responseCode = "400", description = "Invalid request data"),
-      @ApiResponse(responseCode = "401", description = "Unauthorized"),
-      @ApiResponse(responseCode = "403", description = "Access denied to this item"),
+      @ApiResponse(responseCode = "400", description = "Invalid request data or image validation failed"),
+      @ApiResponse(responseCode = "401", description = "Unauthorized - valid JWT token required"),
+      @ApiResponse(responseCode = "403", description = "Forbidden - item belongs to another user"),
       @ApiResponse(responseCode = "404", description = "Item not found")
   })
   public ResponseEntity<ItemResponse> updateItem(
@@ -132,12 +137,12 @@ public class ItemController {
   @DeleteMapping("/{id}")
   @Operation(
       summary = "Delete a wardrobe item",
-      description = "Deletes a wardrobe item owned by the authenticated user"
+      description = "Deletes a wardrobe item owned by the authenticated user. Associated image will also be deleted."
   )
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Item deleted successfully"),
-      @ApiResponse(responseCode = "401", description = "Unauthorized"),
-      @ApiResponse(responseCode = "403", description = "Access denied to this item"),
+      @ApiResponse(responseCode = "401", description = "Unauthorized - valid JWT token required"),
+      @ApiResponse(responseCode = "403", description = "Forbidden - item belongs to another user"),
       @ApiResponse(responseCode = "404", description = "Item not found")
   })
   public ResponseEntity<Void> deleteItem(
@@ -156,12 +161,12 @@ public class ItemController {
   @GetMapping("/{id}")
   @Operation(
       summary = "Get a wardrobe item",
-      description = "Retrieves a specific wardrobe item owned by the authenticated user"
+      description = "Retrieves a specific wardrobe item by ID owned by the authenticated user"
   )
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Item retrieved successfully"),
-      @ApiResponse(responseCode = "401", description = "Unauthorized"),
-      @ApiResponse(responseCode = "403", description = "Access denied to this item"),
+      @ApiResponse(responseCode = "401", description = "Unauthorized - valid JWT token required"),
+      @ApiResponse(responseCode = "403", description = "Forbidden - item belongs to another user"),
       @ApiResponse(responseCode = "404", description = "Item not found")
   })
   public ResponseEntity<ItemResponse> getItem(
@@ -180,13 +185,14 @@ public class ItemController {
   @GetMapping("/{id}/image")
   @Operation(
       summary = "Get item image",
-      description = "Retrieves the image for a specific wardrobe item"
+      description = "Retrieves the image binary data for a specific wardrobe item. " +
+          "Returns the image with appropriate Content-Type header (image/jpeg, image/png, or image/webp)"
   )
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Image retrieved successfully"),
-      @ApiResponse(responseCode = "401", description = "Unauthorized"),
-      @ApiResponse(responseCode = "403", description = "Access denied to this item"),
-      @ApiResponse(responseCode = "404", description = "Item or image not found")
+      @ApiResponse(responseCode = "401", description = "Unauthorized - valid JWT token required"),
+      @ApiResponse(responseCode = "403", description = "Forbidden - item belongs to another user"),
+      @ApiResponse(responseCode = "404", description = "Item not found or item has no image")
   })
   public ResponseEntity<byte[]> getItemImage(
       @Parameter(description = "Item ID", required = true)
@@ -217,7 +223,7 @@ public class ItemController {
   )
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Items retrieved successfully"),
-      @ApiResponse(responseCode = "401", description = "Unauthorized")
+      @ApiResponse(responseCode = "401", description = "Unauthorized - valid JWT token required")
   })
   public ResponseEntity<List<ItemResponse>> getAllItems() {
     String userId = getCurrentUserId();

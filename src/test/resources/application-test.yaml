@@ -8,6 +8,12 @@ spring:
     error:
       include-message: always
       include-binding-errors: always
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 25MB
+      file-size-threshold: 2KB
 
 # Server configuration
 server:
