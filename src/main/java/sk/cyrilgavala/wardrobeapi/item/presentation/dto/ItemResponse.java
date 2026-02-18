@@ -38,8 +38,8 @@ public record ItemResponse(
     @Schema(description = "Whether the item can be bleached", example = "false")
     Boolean canBeBleached,
 
-    @Schema(description = "URL of the item image", example = "https://example.com/image.jpg")
-    String imageUrl,
+    @Schema(description = "GridFS ID of the item image", example = "507f1f77bcf86cd799439013")
+    String imageId,
 
     @Schema(description = "Box number where the item is stored", example = "1")
     Integer boxNumber,
@@ -63,7 +63,7 @@ public record ItemResponse(
       Boolean canBeIroned,
       Boolean canBeDried,
       Boolean canBeBleached,
-      String imageUrl,
+      String imageId,
       Integer boxNumber,
       Instant createdAt,
       Instant updatedAt) {
@@ -79,7 +79,7 @@ public record ItemResponse(
         canBeIroned,
         canBeDried,
         canBeBleached,
-        imageUrl,
+        imageId,
         boxNumber,
         createdAt,
         updatedAt

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import sk.cyrilgavala.wardrobeapi.auth.domain.exception.DuplicateUserException;
 import sk.cyrilgavala.wardrobeapi.auth.domain.exception.InvalidCredentialsException;
 import sk.cyrilgavala.wardrobeapi.auth.domain.exception.UserNotFoundException;
+import sk.cyrilgavala.wardrobeapi.shared.presentation.dto.ErrorResponse;
+import sk.cyrilgavala.wardrobeapi.shared.presentation.dto.ValidationErrorResponse;
 
 @Slf4j
 @RestControllerAdvice(basePackages = "sk.cyrilgavala.wardrobeapi.auth")
@@ -87,101 +89,6 @@ public class AuthExceptionHandler {
         .message("An unexpected error occurred")
         .build();
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-  }
-
-  public record ErrorResponse(
-      Instant timestamp,
-      int status,
-      String error,
-      String message
-  ) {
-
-    public static ErrorResponseBuilder builder() {
-      return new ErrorResponseBuilder();
-    }
-
-    public static class ErrorResponseBuilder {
-
-      private Instant timestamp;
-      private int status;
-      private String error;
-      private String message;
-
-      public ErrorResponseBuilder timestamp(Instant timestamp) {
-        this.timestamp = timestamp;
-        return this;
-      }
-
-      public ErrorResponseBuilder status(int status) {
-        this.status = status;
-        return this;
-      }
-
-      public ErrorResponseBuilder error(String error) {
-        this.error = error;
-        return this;
-      }
-
-      public ErrorResponseBuilder message(String message) {
-        this.message = message;
-        return this;
-      }
-
-      public ErrorResponse build() {
-        return new ErrorResponse(timestamp, status, error, message);
-      }
-    }
-  }
-
-  public record ValidationErrorResponse(
-      Instant timestamp,
-      int status,
-      String error,
-      String message,
-      Map<String, String> errors
-  ) {
-
-    public static ValidationErrorResponseBuilder builder() {
-      return new ValidationErrorResponseBuilder();
-    }
-
-    public static class ValidationErrorResponseBuilder {
-
-      private Instant timestamp;
-      private int status;
-      private String error;
-      private String message;
-      private Map<String, String> errors;
-
-      public ValidationErrorResponseBuilder timestamp(Instant timestamp) {
-        this.timestamp = timestamp;
-        return this;
-      }
-
-      public ValidationErrorResponseBuilder status(int status) {
-        this.status = status;
-        return this;
-      }
-
-      public ValidationErrorResponseBuilder error(String error) {
-        this.error = error;
-        return this;
-      }
-
-      public ValidationErrorResponseBuilder message(String message) {
-        this.message = message;
-        return this;
-      }
-
-      public ValidationErrorResponseBuilder errors(Map<String, String> errors) {
-        this.errors = errors;
-        return this;
-      }
-
-      public ValidationErrorResponse build() {
-        return new ValidationErrorResponse(timestamp, status, error, message, errors);
-      }
-    }
   }
 }
 

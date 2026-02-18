@@ -43,10 +43,6 @@ public record UpdateItemRequest(
     @Schema(description = "Whether the item can be bleached", example = "false")
     Boolean canBeBleached,
 
-    @Schema(description = "URL of the item image", example = "https://example.com/image.jpg")
-    @Size(max = 500, message = "Image URL must not exceed 500 characters")
-    String imageUrl,
-
     @Schema(description = "Box number where the item is stored", example = "1")
     @Min(value = 1, message = "Box number must be at least 1")
     Integer boxNumber

@@ -85,7 +85,7 @@ class GetItemQueryHandlerTest {
         .canBeIroned(true)
         .canBeDried(false)
         .canBeBleached(false)
-        .imageUrl("https://example.com/tshirt.jpg")
+        .imageId("image-tshirt-123")
         .boxNumber(3)
         .build();
 

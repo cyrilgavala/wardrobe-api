@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import sk.cyrilgavala.wardrobeapi.image.application.service.ImageStorageService;
 import sk.cyrilgavala.wardrobeapi.item.application.command.DeleteItemCommand;
 import sk.cyrilgavala.wardrobeapi.item.domain.exception.ItemAccessDeniedException;
 import sk.cyrilgavala.wardrobeapi.item.domain.exception.ItemNotFoundException;
@@ -19,6 +20,7 @@ import sk.cyrilgavala.wardrobeapi.item.domain.repository.ItemRepository;
 public class DeleteItemCommandHandler {
 
   private final ItemRepository itemRepository;
+  private final ImageStorageService imageStorageService;
 
   @Transactional
   public void handle(DeleteItemCommand command) {
@@ -36,6 +38,12 @@ public class DeleteItemCommandHandler {
       log.warn("Delete failed: access denied to item {} for user {}", command.id(),
           command.userId());
       throw ItemAccessDeniedException.withId(command.id());
+    }
+
+    // Delete associated image if exists
+    if (item.imageId() != null) {
+      imageStorageService.deleteImage(item.imageId());
+      log.info("Deleted associated image: {}", item.imageId());
     }
 
     itemRepository.deleteById(command.id());

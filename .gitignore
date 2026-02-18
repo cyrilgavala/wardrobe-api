@@ -30,3 +30,5 @@ build
 
 .env
 src/main/resources/keystore/*.p12
+
+.serena/

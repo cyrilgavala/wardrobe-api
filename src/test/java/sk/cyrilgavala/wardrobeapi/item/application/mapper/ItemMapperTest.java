@@ -31,7 +31,7 @@ class ItemMapperTest {
         true,
         false,
         false,
-        "https://example.com/image.jpg",
+        "image123",
         5
     );
 
@@ -48,7 +48,7 @@ class ItemMapperTest {
     assertThat(result.canBeIroned()).isTrue();
     assertThat(result.canBeDried()).isFalse();
     assertThat(result.canBeBleached()).isFalse();
-    assertThat(result.imageUrl()).isEqualTo("https://example.com/image.jpg");
+    assertThat(result.imageId()).isEqualTo("image123");
     assertThat(result.boxNumber()).isEqualTo(5);
   }
 
@@ -82,7 +82,7 @@ class ItemMapperTest {
     assertThat(result.canBeIroned()).isNull();
     assertThat(result.canBeDried()).isNull();
     assertThat(result.canBeBleached()).isNull();
-    assertThat(result.imageUrl()).isNull();
+    assertThat(result.imageId()).isNull();
     assertThat(result.boxNumber()).isNull();
   }
 
@@ -134,7 +134,7 @@ class ItemMapperTest {
         false,
         true,
         false,
-        "https://new-image.jpg",
+        "image-new-123",
         7
     );
 
@@ -152,7 +152,7 @@ class ItemMapperTest {
     assertThat(result.canBeIroned()).isFalse();
     assertThat(result.canBeDried()).isTrue();
     assertThat(result.canBeBleached()).isFalse();
-    assertThat(result.imageUrl()).isEqualTo("https://new-image.jpg");
+    assertThat(result.imageId()).isEqualTo("image-new-123");
     assertThat(result.boxNumber()).isEqualTo(7);
   }
 

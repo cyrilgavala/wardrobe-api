@@ -39,7 +39,7 @@ class CreateItemCommandHandlerTest {
         true,
         false,
         false,
-        "https://example.com/image.jpg",
+        "image123",
         5
     );
     Item mappedItem = Item.create(
@@ -53,7 +53,7 @@ class CreateItemCommandHandlerTest {
         true,
         false,
         false,
-        "https://example.com/image.jpg",
+        "image123",
         5
     );
     Item savedItem = Item.builder()
@@ -68,7 +68,7 @@ class CreateItemCommandHandlerTest {
         .canBeIroned(true)
         .canBeDried(false)
         .canBeBleached(false)
-        .imageUrl("https://example.com/image.jpg")
+        .imageId("image123")
         .boxNumber(5)
         .build();
 

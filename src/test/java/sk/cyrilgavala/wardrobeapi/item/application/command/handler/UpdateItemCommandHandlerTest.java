@@ -65,7 +65,7 @@ class UpdateItemCommandHandlerTest {
         .canBeIroned(false)
         .canBeDried(true)
         .canBeBleached(false)
-        .imageUrl("https://new-image.jpg")
+        .imageId("image-new-123")
         .boxNumber(7)
         .build();
 

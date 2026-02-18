@@ -25,7 +25,7 @@ public class ItemMapper {
         command.canBeIroned(),
         command.canBeDried(),
         command.canBeBleached(),
-        command.imageUrl(),
+        command.imageId(),
         command.boxNumber()
     );
   }
@@ -41,7 +41,7 @@ public class ItemMapper {
         command.canBeIroned(),
         command.canBeDried(),
         command.canBeBleached(),
-        command.imageUrl(),
+        command.imageId(),
         command.boxNumber()
     );
   }

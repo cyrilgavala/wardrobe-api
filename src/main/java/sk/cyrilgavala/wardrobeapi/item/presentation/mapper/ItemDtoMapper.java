@@ -12,7 +12,8 @@ import sk.cyrilgavala.wardrobeapi.item.presentation.dto.UpdateItemRequest;
 @Component
 public class ItemDtoMapper {
 
-  public CreateItemCommand toCreateCommand(CreateItemRequest request, String userId) {
+  public CreateItemCommand toCreateCommand(CreateItemRequest request, String userId,
+      String imageId) {
     return new CreateItemCommand(
         userId,
         request.name(),
@@ -24,12 +25,13 @@ public class ItemDtoMapper {
         request.canBeIroned(),
         request.canBeDried(),
         request.canBeBleached(),
-        request.imageUrl(),
+        imageId,
         request.boxNumber()
     );
   }
 
-  public UpdateItemCommand toUpdateCommand(UpdateItemRequest request, String id, String userId) {
+  public UpdateItemCommand toUpdateCommand(UpdateItemRequest request, String id, String userId,
+      String imageId) {
     return new UpdateItemCommand(
         id,
         userId,
@@ -42,7 +44,7 @@ public class ItemDtoMapper {
         request.canBeIroned(),
         request.canBeDried(),
         request.canBeBleached(),
-        request.imageUrl(),
+        imageId,
         request.boxNumber()
     );
   }
@@ -64,7 +66,7 @@ public class ItemDtoMapper {
         item.canBeIroned(),
         item.canBeDried(),
         item.canBeBleached(),
-        item.imageUrl(),
+        item.imageId(),
         item.boxNumber(),
         item.createdAt(),
         item.updatedAt()

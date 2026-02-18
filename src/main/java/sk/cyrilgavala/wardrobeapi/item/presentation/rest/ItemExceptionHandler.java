@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import sk.cyrilgavala.wardrobeapi.item.domain.exception.ItemAccessDeniedException;
 import sk.cyrilgavala.wardrobeapi.item.domain.exception.ItemNotFoundException;
+import sk.cyrilgavala.wardrobeapi.shared.presentation.dto.ErrorResponse;
+import sk.cyrilgavala.wardrobeapi.shared.presentation.dto.ValidationErrorResponse;
 
 @Slf4j
 @RestControllerAdvice(assignableTypes = ItemController.class)
@@ -24,13 +26,12 @@ public class ItemExceptionHandler {
       WebRequest request) {
     log.error("Item not found: {}", ex.getMessage());
 
-    ErrorResponse error = ErrorResponse.of(
-        HttpStatus.NOT_FOUND.value(),
-        "Item Not Found",
-        ex.getMessage(),
-        Instant.now(),
-        request.getDescription(false)
-    );
+    ErrorResponse error = ErrorResponse.builder()
+        .status(HttpStatus.NOT_FOUND.value())
+        .error("Item Not Found")
+        .message(ex.getMessage())
+        .timestamp(Instant.now())
+        .build();
 
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
   }
@@ -41,13 +42,12 @@ public class ItemExceptionHandler {
       WebRequest request) {
     log.error("Item access denied: {}", ex.getMessage());
 
-    ErrorResponse error = ErrorResponse.of(
-        HttpStatus.FORBIDDEN.value(),
-        "Access Denied",
-        ex.getMessage(),
-        Instant.now(),
-        request.getDescription(false)
-    );
+    ErrorResponse error = ErrorResponse.builder()
+        .status(HttpStatus.FORBIDDEN.value())
+        .error("Access Denied")
+        .message(ex.getMessage())
+        .timestamp(Instant.now())
+        .build();
 
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
   }
@@ -65,14 +65,13 @@ public class ItemExceptionHandler {
       errors.put(fieldName, errorMessage);
     });
 
-    ValidationErrorResponse error = ValidationErrorResponse.of(
-        HttpStatus.BAD_REQUEST.value(),
-        "Validation Failed",
-        "Request validation failed",
-        Instant.now(),
-        request.getDescription(false),
-        errors
-    );
+    ValidationErrorResponse error = ValidationErrorResponse.builder()
+        .status(HttpStatus.BAD_REQUEST.value())
+        .error("Validation Failed")
+        .message("Request validation failed")
+        .timestamp(Instant.now())
+        .errors(errors)
+        .build();
 
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
   }
@@ -83,45 +82,13 @@ public class ItemExceptionHandler {
       WebRequest request) {
     log.error("Illegal argument: {}", ex.getMessage());
 
-    ErrorResponse error = ErrorResponse.of(
-        HttpStatus.BAD_REQUEST.value(),
-        "Bad Request",
-        ex.getMessage(),
-        Instant.now(),
-        request.getDescription(false)
-    );
+    ErrorResponse error = ErrorResponse.builder()
+        .status(HttpStatus.BAD_REQUEST.value())
+        .error("Bad Request")
+        .message(ex.getMessage())
+        .timestamp(Instant.now())
+        .build();
 
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
   }
-
-  public record ErrorResponse(
-      int status,
-      String error,
-      String message,
-      Instant timestamp,
-      String path
-  ) {
-
-    public static ErrorResponse of(int status, String error, String message, Instant timestamp,
-        String path) {
-      return new ErrorResponse(status, error, message, timestamp, path);
-    }
-  }
-
-  public record ValidationErrorResponse(
-      int status,
-      String error,
-      String message,
-      Instant timestamp,
-      String path,
-      Map<String, String> validationErrors
-  ) {
-
-    public static ValidationErrorResponse of(int status, String error, String message,
-        Instant timestamp, String path, Map<String, String> validationErrors) {
-      return new ValidationErrorResponse(status, error, message, timestamp, path,
-          validationErrors);
-    }
-  }
 }
-

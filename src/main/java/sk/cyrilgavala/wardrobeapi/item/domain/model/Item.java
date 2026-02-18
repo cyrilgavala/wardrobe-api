@@ -31,8 +31,8 @@ public record Item(
     Boolean canBeDried,
     @Field("can_be_bleached")
     Boolean canBeBleached,
-    @Field("image_url")
-    String imageUrl,
+    @Field("image_id")
+    String imageId,
     @Field("box_number")
     Integer boxNumber,
     @Field("created_at")
@@ -52,7 +52,7 @@ public record Item(
       Boolean canBeIroned,
       Boolean canBeDried,
       Boolean canBeBleached,
-      String imageUrl,
+      String imageId,
       Integer boxNumber) {
     return Item.builder()
         .userId(userId)
@@ -65,7 +65,7 @@ public record Item(
         .canBeIroned(canBeIroned)
         .canBeDried(canBeDried)
         .canBeBleached(canBeBleached)
-        .imageUrl(imageUrl)
+        .imageId(imageId)
         .boxNumber(boxNumber)
         .createdAt(Instant.now())
         .updatedAt(Instant.now())
@@ -82,7 +82,7 @@ public record Item(
       Boolean canBeIroned,
       Boolean canBeDried,
       Boolean canBeBleached,
-      String imageUrl,
+      String imageId,
       Integer boxNumber) {
     return Item.builder()
         .id(this.id)
@@ -96,7 +96,7 @@ public record Item(
         .canBeIroned(canBeIroned)
         .canBeDried(canBeDried)
         .canBeBleached(canBeBleached)
-        .imageUrl(imageUrl)
+        .imageId(imageId)
         .boxNumber(boxNumber)
         .createdAt(this.createdAt)
         .updatedAt(Instant.now())

@@ -35,11 +35,10 @@ class ItemDtoMapperTest {
         true,
         false,
         false,
-        "https://example.com/image.jpg",
         5
     );
 
-    CreateItemCommand result = mapper.toCreateCommand(request, "user123");
+    CreateItemCommand result = mapper.toCreateCommand(request, "user123", "image123");
 
     assertThat(result)
         .usingRecursiveComparison()
@@ -54,7 +53,7 @@ class ItemDtoMapperTest {
             true,
             false,
             false,
-            "https://example.com/image.jpg",
+            "image123",
             5
         ));
   }
@@ -71,11 +70,10 @@ class ItemDtoMapperTest {
         null,
         null,
         null,
-        null,
         null
     );
 
-    CreateItemCommand result = mapper.toCreateCommand(request, "user456");
+    CreateItemCommand result = mapper.toCreateCommand(request, "user456", null);
 
     assertThat(result)
         .usingRecursiveComparison()
@@ -107,11 +105,10 @@ class ItemDtoMapperTest {
         true,
         false,
         false,
-        null,
         null
     );
 
-    CreateItemCommand result = mapper.toCreateCommand(request, "user789");
+    CreateItemCommand result = mapper.toCreateCommand(request, "user789", null);
 
     assertThat(result)
         .usingRecursiveComparison()
@@ -143,11 +140,11 @@ class ItemDtoMapperTest {
         false,
         true,
         false,
-        "https://new-image.jpg",
         7
     );
 
-    UpdateItemCommand result = mapper.toUpdateCommand(request, "item123", "user123");
+    UpdateItemCommand result = mapper.toUpdateCommand(request, "item123", "user123",
+        "image-new-123");
 
     assertThat(result)
         .usingRecursiveComparison()
@@ -163,7 +160,7 @@ class ItemDtoMapperTest {
             false,
             true,
             false,
-            "https://new-image.jpg",
+            "image-new-123",
             7
         ));
   }
@@ -180,11 +177,10 @@ class ItemDtoMapperTest {
         null,
         null,
         null,
-        null,
         null
     );
 
-    UpdateItemCommand result = mapper.toUpdateCommand(request, "item999", "user999");
+    UpdateItemCommand result = mapper.toUpdateCommand(request, "item999", "user999", null);
 
     assertThat(result)
         .usingRecursiveComparison()
@@ -217,11 +213,10 @@ class ItemDtoMapperTest {
         true,
         false,
         false,
-        null,
         3
     );
 
-    UpdateItemCommand result = mapper.toUpdateCommand(request, "item456", "user456");
+    UpdateItemCommand result = mapper.toUpdateCommand(request, "item456", "user456", null);
 
     assertThat(result)
         .usingRecursiveComparison()
@@ -256,7 +251,7 @@ class ItemDtoMapperTest {
         .canBeIroned(true)
         .canBeDried(false)
         .canBeBleached(false)
-        .imageUrl("https://example.com/image.jpg")
+        .imageId("image123")
         .boxNumber(5)
         .createdAt(Instant.parse("2024-01-01T10:00:00Z"))
         .updatedAt(Instant.parse("2024-01-02T15:30:00Z"))
@@ -278,7 +273,7 @@ class ItemDtoMapperTest {
             true,
             false,
             false,
-            "https://example.com/image.jpg",
+            "image123",
             5,
             Instant.parse("2024-01-01T10:00:00Z"),
             Instant.parse("2024-01-02T15:30:00Z")
@@ -299,7 +294,7 @@ class ItemDtoMapperTest {
         .canBeIroned(null)
         .canBeDried(null)
         .canBeBleached(null)
-        .imageUrl(null)
+        .imageId(null)
         .boxNumber(null)
         .createdAt(Instant.parse("2024-02-01T08:00:00Z"))
         .updatedAt(Instant.parse("2024-02-01T08:00:00Z"))
@@ -402,7 +397,7 @@ class ItemDtoMapperTest {
             .canBeIroned(true)
             .canBeDried(false)
             .canBeBleached(false)
-            .imageUrl("url1")
+            .imageId("image1")
             .boxNumber(1)
             .createdAt(Instant.parse("2024-01-01T10:00:00Z"))
             .updatedAt(Instant.parse("2024-01-01T10:00:00Z"))
@@ -425,7 +420,7 @@ class ItemDtoMapperTest {
             true,
             false,
             false,
-            "url1",
+            "image1",
             1,
             Instant.parse("2024-01-01T10:00:00Z"),
             Instant.parse("2024-01-01T10:00:00Z")
